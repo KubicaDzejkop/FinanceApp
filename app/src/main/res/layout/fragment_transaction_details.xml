@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <!-- Nagłówek z tytułem i przyciskiem X -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:id="@+id/text_details_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Szczegóły transakcji"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/text_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:focusable="true"/>
+        </RelativeLayout>
+
+        <!-- Kwota -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
+            <TextView
+                android:id="@+id/text_amount_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kwota:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/text_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10,99pln"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Odbiorca -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
+            <TextView
+                android:id="@+id/text_recipient_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Odbiorca:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/text_recipient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Biedronka Tarnobrzeg,\nul. Piasta 10A"
+                android:textSize="16sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Data przelewu -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
+            <TextView
+                android:id="@+id/text_date_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data przelewu:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/text_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="21.05.2025"
+                android:textSize="16sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Numer transakcji -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
+            <TextView
+                android:id="@+id/text_transaction_number_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Numer transakcji:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/text_transaction_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9043452347"
+                android:textSize="16sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Typ operacji -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
+            <TextView
+                android:id="@+id/text_operation_type_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Typ operacji:"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/text_operation_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BLIK"
+                android:textSize="16sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Kategoria operacji + Zmień -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/text_operation_category_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kategoria operacji:"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:id="@+id/text_operation_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zakupy"
+                    android:textSize="16sp"
+                    android:paddingTop="2dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_category_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zmień"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark"
+                android:paddingStart="12dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Lista kategorii - domyślnie ukryta, pojawia się po kliknięciu "Zmień" -->
+        <LinearLayout
+            android:id="@+id/layout_category_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:background="@android:color/white"
+            android:padding="6dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/category_rozrywka"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rozrywka"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:id="@+id/category_rachunki"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rachunki"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:id="@+id/category_zywnosc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Żywność"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:id="@+id/category_transport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Transport"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:id="@+id/category_inne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inne"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

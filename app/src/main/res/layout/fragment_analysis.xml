@@ -1,57 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp"
+        android:gravity="center_horizontal">
 
-        <Button
-            android:id="@+id/btnClose"
+        <!-- Header: Analiza finansowa + zamknięcie (X) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/text_analysis_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Analiza finansowa"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/text_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:focusable="true"/>
+        </RelativeLayout>
+
+        <!-- Wpływy i wydatki + średnia -->
+        <TextView
+            android:id="@+id/text_income_outcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="X"/>
+            android:text="Wpływy i wydatki"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:paddingBottom="10dp"/>
 
         <TextView
+            android:id="@+id/text_avg_spending_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Średnio miesięcznie wydajesz:"
-            android:textSize="16sp"/>
+            android:textSize="15sp"
+            android:layout_gravity="start"/>
 
         <TextView
-            android:id="@+id/tvAverageSpending"
+            android:id="@+id/text_avg_spending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="693,26 PLN"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="24dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Wpływy i wydatki"
+            android:text="693,26pln"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:layout_gravity="start"/>
 
-        <TableLayout
-            android:id="@+id/tableMonthlyData"
+        <!-- Sekcja wykresu -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/text_chart_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wykres wpływów i wydatków"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:paddingBottom="10dp"/>
+
+        <!-- Placeholder na wykres słupkowy -->
+        <FrameLayout
+            android:id="@+id/chart_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Oś X z nazwami miesięcy (przyciski do kliknięcia) -->
+        <LinearLayout
+            android:id="@+id/months_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:stretchColumns="*">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="14dp">
 
-            <!-- Tabela będzie wypełniana dynamicznie -->
-        </TableLayout>
+            <TextView
+                android:id="@+id/text_month_1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Mar"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:padding="4dp"/>
+            <TextView
+                android:id="@+id/text_month_2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="kwie"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:padding="4dp"/>
+            <TextView
+                android:id="@+id/text_month_3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="maj"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:padding="4dp"/>
+            <TextView
+                android:id="@+id/text_month_4"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="cze"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:padding="4dp"/>
+            <TextView
+                android:id="@+id/text_month_5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="lip"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:padding="4dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Podsumowanie -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+                <TextView
+                    android:id="@+id/text_total_incomes_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wpływy:"
+                    android:textSize="15sp"
+                    android:layout_gravity="start"/>
+                <TextView
+                    android:id="@+id/text_total_incomes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1010,26pln"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:paddingStart="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/text_total_outcomes_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wydatki:"
+                    android:textSize="15sp"
+                    android:layout_gravity="start"/>
+                <TextView
+                    android:id="@+id/text_total_outcomes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="509,26pln"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:paddingStart="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

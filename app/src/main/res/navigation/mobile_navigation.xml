@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -12,14 +12,25 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.financeapp.ui.dashboard.DashboardFragment"
-        android:label="Transakcje"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_history"
+        android:name="com.example.financeapp.ui.fragments.HistoryFragment"
+        android:label="Historia"
+        tools:layout="@layout/fragment_history" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.financeapp.ui.notifications.NotificationsFragment"
-        android:label="Budżet"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_profile"
+        android:name="com.example.financeapp.ui.fragments.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.financeapp.ui.fragments.LoginFragment"
+        android:label="Logowanie"
+        tools:layout="@layout/fragment_login">
+    <action
+        android:id="@+id/action_loginFragment_to_homeFragment"
+        app:destination="@id/navigation_home"/>
+        </fragment>
+
+
 </navigation>

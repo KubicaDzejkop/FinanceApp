@@ -52,7 +52,7 @@
         android:id="@+id/transactionDetailsFragment"
         android:name="com.example.financeapp.ui.fragments.TransactionDetailsFragment"
         android:label="Szczegóły transakcji"
-        tools:layout="@layout/fragment_transaction_details" />
+        tools:layout="@layout/fragment_transaction_details"  />
 
     <!-- DODAJ TE FRAGMENTY, JEŚLI NIE MASZ ICH NIŻEJ W PLIKU! -->
     <fragment

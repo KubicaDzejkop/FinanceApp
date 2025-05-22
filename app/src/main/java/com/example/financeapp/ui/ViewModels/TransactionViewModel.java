@@ -2,6 +2,8 @@ package com.example.financeapp.ui.ViewModels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.TransactionRepository;
 import com.example.financeapp.ui.models.Transaction;
 import java.util.List;
@@ -14,6 +16,7 @@ public class TransactionViewModel extends ViewModel {
         this.repository = repository;
         this.balance = repository.getBalance();
     }
+
 
     // Metody dostępne dla wszystkich fragmentów
     public LiveData<Double> getBalance() {

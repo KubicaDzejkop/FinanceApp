@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.financeapp.R;
 import com.example.financeapp.databinding.FragmentHomeBinding;
 import com.example.financeapp.ui.ViewModels.TransactionViewModel;
+import com.example.financeapp.ui.ViewModels.TransactionViewModelFactory;
 import com.example.financeapp.ui.adapters.RecentTransactionsAdapter;
+import com.example.financeapp.ui.database.AppDatabase;
+import com.example.financeapp.ui.database.TransactionRepository;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -27,7 +30,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(TransactionViewModel.class);
+        AppDatabase db = AppDatabase.getDatabase(requireContext());
+        TransactionRepository repository = new TransactionRepository(db.transactionDao());
+        TransactionViewModelFactory factory = new TransactionViewModelFactory(repository);
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(TransactionViewModel.class);
 
         // Pobieramy userId dopiero tutaj, gdy fragment jest już podłączony do activity
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);

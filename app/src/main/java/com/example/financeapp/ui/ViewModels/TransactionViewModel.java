@@ -9,12 +9,10 @@ import java.util.List;
 public class TransactionViewModel extends ViewModel {
     private final TransactionRepository repository;
     private final LiveData<Double> balance;
-    private final LiveData<List<Transaction>> transactions;
 
     public TransactionViewModel(TransactionRepository repository) {
         this.repository = repository;
         this.balance = repository.getBalance();
-        this.transactions = repository.getAllTransactions();
     }
 
     // Metody dostępne dla wszystkich fragmentów
@@ -22,8 +20,9 @@ public class TransactionViewModel extends ViewModel {
         return balance;
     }
 
-    public LiveData<List<Transaction>> getTransactions() {
-        return transactions;
+    // Teraz przekazujesz userId!
+    public LiveData<List<Transaction>> getTransactions(int userId) {
+        return repository.getAllTransactions(userId);
     }
 
     public void insertTransaction(Transaction transaction) {

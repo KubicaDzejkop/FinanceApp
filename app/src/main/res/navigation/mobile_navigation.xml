@@ -8,29 +8,63 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.financeapp.ui.fragments.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        android:label="Strona główna"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+        <action
+            android:id="@+id/action_home_to_historyFragment"
+            app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_home_to_analysisFragment"
+            app:destination="@id/navigation_analysis" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.financeapp.ui.fragments.HistoryFragment"
         android:label="Historia"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_transactionDetailsFragment"
+            app:destination="@id/transactionDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.financeapp.ui.fragments.ProfileFragment"
         android:label="Profil"
         tools:layout="@layout/fragment_profile" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.financeapp.ui.fragments.LoginFragment"
         android:label="Logowanie"
         tools:layout="@layout/fragment_login">
-    <action
-        android:id="@+id/action_loginFragment_to_homeFragment"
-        app:destination="@id/navigation_home"/>
-        </fragment>
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/navigation_home"/>
+    </fragment>
 
+    <fragment
+        android:id="@+id/transactionDetailsFragment"
+        android:name="com.example.financeapp.ui.fragments.TransactionDetailsFragment"
+        android:label="Szczegóły transakcji"
+        tools:layout="@layout/fragment_transaction_details" />
+
+    <!-- DODAJ TE FRAGMENTY, JEŚLI NIE MASZ ICH NIŻEJ W PLIKU! -->
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.example.financeapp.ui.fragments.AddTransactionFragment"
+        android:label="Dodaj transakcję"
+        tools:layout="@layout/fragment_add_transaction" />
+
+    <fragment
+        android:id="@+id/navigation_analysis"
+        android:name="com.example.financeapp.ui.fragments.AnalysisFragment"
+        android:label="Analiza"
+        tools:layout="@layout/fragment_analysis" />
 
 </navigation>

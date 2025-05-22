@@ -4,35 +4,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.financeapp.R;
 import com.example.financeapp.ui.models.Transaction;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
 
     private List<Transaction> transactionList = new ArrayList<>();
+    private OnTransactionClickListener listener;
+
+    public interface OnTransactionClickListener {
+        void onTransactionClick(Transaction transaction);
+    }
+
+    public void setOnTransactionClickListener(OnTransactionClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactionList = transactions != null ? transactions : new ArrayList<>();
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_transaction_details, parent, false);
-        return new TransactionViewHolder(itemView);
+                .inflate(R.layout.item_transaction, parent, false);
+        return new TransactionViewHolder(itemView, listener);
     }
-
-    
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        Transaction transaction = transactionList.get(position);
-        holder.textRecipient.setText(transaction.getRecipient());
-        holder.textAmount.setText(String.format("%.2f zł", transaction.getAmount()));
-        holder.textCategory.setText(transaction.getCategory());
-        holder.textDate.setText(transaction.getDate());
-        holder.textType.setText(transaction.getType().equals("income") ? "Przychód" : "Wydatek");
+        holder.bind(transactionList.get(position));
     }
 
     @Override
@@ -40,21 +50,25 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         return transactionList.size();
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactionList = transactions;
-        notifyDataSetChanged();
-    }
-
     static class TransactionViewHolder extends RecyclerView.ViewHolder {
-        TextView textRecipient, textAmount, textCategory, textDate, textType;
+        TextView recipient, amount;
 
-        TransactionViewHolder(@NonNull View itemView) {
+        TransactionViewHolder(@NonNull View itemView, final OnTransactionClickListener listener) {
             super(itemView);
-            textRecipient = itemView.findViewById(R.id.text_recipient);
-            textAmount = itemView.findViewById(R.id.text_amount);
-            textCategory = itemView.findViewById(R.id.text_operation_category);
-            textDate = itemView.findViewById(R.id.text_date);
-            textType = itemView.findViewById(R.id.text_operation_type);
+            recipient = itemView.findViewById(R.id.tvRecipient);
+            amount = itemView.findViewById(R.id.tvAmount);
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    listener.onTransactionClick((Transaction) v.getTag());
+                }
+            });
+        }
+
+        void bind(Transaction transaction) {
+            recipient.setText(transaction.getRecipient());
+            amount.setText(String.format("%.2f PLN", transaction.getAmount()));
+            itemView.setTag(transaction);
         }
     }
 }

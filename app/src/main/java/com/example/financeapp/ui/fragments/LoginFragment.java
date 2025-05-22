@@ -5,38 +5,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import com.example.financeapp.R;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.example.financeapp.ui.ViewModels.LoginViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class LoginFragment extends Fragment {
-
-    public LoginFragment() {
-        // Wymagany pusty konstruktor publiczny
-    }
+    private LoginViewModel loginViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_login_panel, container, false); // zakładam, że masz już nowy layout
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        EditText usernameEt = view.findViewById(R.id.editTextUsername);
+        EditText passwordEt = view.findViewById(R.id.editTextPassword);
         Button loginButton = view.findViewById(R.id.button_login);
-        loginButton.setOnClickListener(v -> {
-            // Tutaj możesz dodać logikę do weryfikacji użytkownika, jeśli chcesz
 
-            // Przejście do ekranu głównego po kliknięciu
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+        loginButton.setOnClickListener(v -> {
+            String username = usernameEt.getText().toString();
+            String password = passwordEt.getText().toString();
+            loginViewModel.login(username, password);
+        });
+
+        loginViewModel.loggedUser.observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                // ZAPISZ userId do SharedPreferences
+                SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+                prefs.edit().putInt("user_id", user.getId()).apply();
+
+                // Przejście do HomeFragment
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+            } else {
+                Toast.makeText(getContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

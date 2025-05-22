@@ -13,7 +13,7 @@
 
         <!-- Nagłówek -->
         <TextView
-            android:id="@+id/text_profile_title"
+            android:id="@+id/text_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Profil"

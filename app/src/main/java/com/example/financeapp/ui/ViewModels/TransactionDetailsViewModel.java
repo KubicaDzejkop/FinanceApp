@@ -4,16 +4,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.financeapp.ui.database.TransactionRepository;
 import com.example.financeapp.ui.models.Transaction;
-import java.util.List;
 
-public class HistoryViewModel extends ViewModel {
+public class TransactionDetailsViewModel extends ViewModel {
     private TransactionRepository repository;
 
-    public HistoryViewModel(TransactionRepository repository) {
+    public void setRepository(TransactionRepository repository) {
         this.repository = repository;
     }
 
-    public LiveData<List<Transaction>> getAllTransactions(int userId) {
-        return repository.getAllTransactions(userId);
+    public LiveData<Transaction> getTransactionById(int transactionId, int userId) {
+        return repository.getTransactionById(transactionId, userId);
     }
 }

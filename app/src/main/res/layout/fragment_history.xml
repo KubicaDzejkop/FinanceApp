@@ -1,229 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp">
 
+    <!-- Header row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
 
-        <!-- Header row: Historia (left), Analiza finansowa (right, clickable) -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/text_history_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingBottom="12dp">
+            android:layout_weight="1"
+            android:text="Historia"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="start"/>
 
-            <TextView
-                android:id="@+id/text_history_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Historia"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="start"/>
-
-            <TextView
-                android:id="@+id/text_analysis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Analiza finansowa"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_blue_dark"
-                android:paddingStart="12dp"
-                android:clickable="true"
-                android:focusable="true"/>
-        </LinearLayout>
-
-        <!-- Search bar -->
-        <EditText
-            android:id="@+id/edit_search"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@android:drawable/edit_text"
-            android:hint="Szukaj w historii transakcji"
-            android:paddingHorizontal="12dp"
+        <TextView
+            android:id="@+id/text_analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Analiza finansowa"
             android:textSize="16sp"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- 1. Date section -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dziś, 21.05.2025"
             android:textStyle="bold"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/black"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="0dp"/>
-
-        <!-- 1. Transaction -->
-        <LinearLayout
+            android:textColor="@android:color/holo_blue_dark"
+            android:paddingStart="12dp"
             android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:backgroundTint="@android:color/darker_gray"
-            android:elevation="2dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/text_transaction_title_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Biedronka"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/text_transaction_type_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Blik"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_transaction_amount_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10,99pln"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- 2. Date section -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="19.05.2025"
-            android:textStyle="bold"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/black"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="0dp"/>
-
-        <!-- 2. Transaction -->
-        <LinearLayout
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:backgroundTint="@android:color/darker_gray"
-            android:elevation="2dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/text_transaction_title_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Internet"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/text_transaction_type_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Przelew"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_transaction_amount_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="123,32pln"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- 3. Date section -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="13.04.2025"
-            android:textStyle="bold"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/black"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="0dp"/>
-
-        <!-- 3. Transaction -->
-        <LinearLayout
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:backgroundTint="@android:color/darker_gray"
-            android:elevation="2dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/text_transaction_title_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Spotify premium"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/text_transaction_type_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Przelew"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_transaction_amount_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="17,99pln"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- Przyszłościowo: tu będzie RecyclerView zamiast statycznych LinearLayoutów -->
-
+            android:focusable="true"/>
     </LinearLayout>
-</ScrollView>
+
+    <!-- Search bar -->
+    <EditText
+        android:id="@+id/edit_search"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="Szukaj w historii transakcji"
+        android:paddingHorizontal="12dp"
+        android:textSize="16sp"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- RecyclerView na transakcje -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTransactions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
+</LinearLayout>

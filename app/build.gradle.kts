@@ -55,7 +55,7 @@ dependencies {
     // Lifecycle components
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.6.2")
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:3.1.0")
     implementation ("androidx.room:room-runtime:2.4.0")
     annotationProcessor ("androidx.room:room-compiler:2.4.0")
 }

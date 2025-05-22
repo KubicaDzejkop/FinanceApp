@@ -1,4 +1,4 @@
-package com.example.financeapp.ui.home;
+package com.example.financeapp.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.financeapp.databinding.FragmentHomeBinding;
-import com.example.financeapp.ui.dashboard.TransactionViewModel;
+import com.example.financeapp.ui.ViewModels.TransactionViewModel;
+import com.example.financeapp.ui.adapters.RecentTransactionsAdapter;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;

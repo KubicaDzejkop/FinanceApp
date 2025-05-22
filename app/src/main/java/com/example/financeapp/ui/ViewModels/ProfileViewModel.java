@@ -1,4 +1,4 @@
-package com.example.financeapp.ui.fragments;
+package com.example.financeapp.ui.ViewModels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

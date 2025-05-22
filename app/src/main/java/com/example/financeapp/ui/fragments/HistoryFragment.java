@@ -4,36 +4,41 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.financeapp.databinding.FragmentHistoryBinding;
-import com.example.financeapp.ui.MainApplication;
-import com.example.financeapp.ui.dashboard.TransactionViewModel;
-import com.example.financeapp.ui.database.TransactionRepository;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.financeapp.R;
+import com.example.financeapp.ui.ViewModels.HistoryViewModel;
+import com.example.financeapp.ui.adapters.TransactionsAdapter;
 
 public class HistoryFragment extends Fragment {
-    private FragmentHistoryBinding binding;
-    private TransactionViewModel viewModel;
 
+    private HistoryViewModel historyViewModel;
+    private TransactionsAdapter adapter;
+
+    @Nullable
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        MainApplication app = (MainApplication) requireActivity().getApplication();
-        TransactionRepository repository = app.getRepository();
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewTransactions);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new TransactionsAdapter();
+        recyclerView.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new TransactionViewModel(repository);
-            }
-        }).get(TransactionViewModel.class);
-    }
+        historyViewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(HistoryViewModel.class);
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+        historyViewModel.getAllTransactions().observe(getViewLifecycleOwner(), transactions -> {
+            adapter.setTransactions(transactions);
+        });
+
+        return view;
     }
 }

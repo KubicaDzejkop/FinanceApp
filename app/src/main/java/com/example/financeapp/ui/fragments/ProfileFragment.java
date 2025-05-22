@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.financeapp.databinding.FragmentProfileBinding;
+import com.example.financeapp.ui.ViewModels.ProfileViewModel;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;

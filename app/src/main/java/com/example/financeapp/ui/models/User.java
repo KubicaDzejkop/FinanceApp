@@ -8,14 +8,13 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String username;
-    private String password; // hashowanie produkcyjnie!
+    private String password; // Uwaga: w produkcji hashowanie!
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    // Gettery i settery
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getUsername() { return username; }

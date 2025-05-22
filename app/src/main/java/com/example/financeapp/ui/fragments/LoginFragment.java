@@ -16,6 +16,7 @@ import com.example.financeapp.ui.ViewModels.LoginViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class LoginFragment extends Fragment {
     private LoginViewModel loginViewModel;
@@ -39,20 +40,20 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> {
             String username = usernameEt.getText().toString();
             String password = passwordEt.getText().toString();
-            loginViewModel.login(username, password);
-        });
 
-        loginViewModel.loggedUser.observe(getViewLifecycleOwner(), user -> {
-            if (user != null) {
-                // ZAPISZ userId do SharedPreferences
-                SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-                prefs.edit().putInt("user_id", user.getId()).apply();
+            loginViewModel.login(username, password).observe(getViewLifecycleOwner(), user -> {
+                Log.d("Login", "Próba loginu: " + username + " / " + password + " -> " + (user != null));
+                if (user != null) {
+                    // ZAPISZ userId do SharedPreferences
+                    SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+                    prefs.edit().putInt("user_id", user.getId()).apply();
 
-                // Przejście do HomeFragment
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
-            } else {
-                Toast.makeText(getContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
-            }
+                    // Przejście do HomeFragment
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                } else {
+                    Toast.makeText(getContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

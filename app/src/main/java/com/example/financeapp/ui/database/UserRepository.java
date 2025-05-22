@@ -1,11 +1,7 @@
 package com.example.financeapp.ui.database;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
-
 import com.example.financeapp.ui.models.User;
-
 import java.util.concurrent.Executors;
 
 public class UserRepository {

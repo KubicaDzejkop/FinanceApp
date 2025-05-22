@@ -7,15 +7,6 @@
     android:background="@android:color/white">
 
     <!-- Back arrow -->
-    <ImageButton
-        android:id="@+id/button_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Wróć"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
 
     <!-- Circle avatar (app logo/photo) -->
     <ImageView
@@ -27,9 +18,10 @@
         android:background="@drawable/circle_background"
         android:contentDescription="Logo aplikacji"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@+id/button_back"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <!-- App name -->
     <TextView
@@ -49,11 +41,11 @@
         android:id="@+id/editTextUsername"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="24dp"
         android:hint="Nazwa użytkownika"
         android:background="@drawable/rounded_edittext"
         android:paddingHorizontal="18dp"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/text_app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +58,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:hint="Hasło"
+        android:textColor="@color/black"
         android:background="@drawable/rounded_edittext"
         android:paddingHorizontal="18dp"
         android:textSize="16sp"

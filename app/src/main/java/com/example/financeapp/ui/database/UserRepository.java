@@ -1,6 +1,9 @@
 package com.example.financeapp.ui.database;
 
+import android.os.Handler;
+import android.os.Looper;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.example.financeapp.ui.models.User;
 import java.util.concurrent.Executors;
 
@@ -11,8 +14,15 @@ public class UserRepository {
         this.userDao = db.userDao();
     }
 
+    // Zwraca LiveData jednorazowo na żądanie
     public LiveData<User> login(String username, String password) {
-        return userDao.login(username, password);
+        MutableLiveData<User> result = new MutableLiveData<>();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            User user = userDao.login(username, password);
+            // Wrzuć wynik na główny wątek
+            new Handler(Looper.getMainLooper()).post(() -> result.setValue(user));
+        });
+        return result;
     }
 
     public void insert(User user) {

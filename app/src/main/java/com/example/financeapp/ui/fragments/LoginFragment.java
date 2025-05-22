@@ -9,51 +9,75 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
 import com.example.financeapp.R;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.financeapp.ui.ViewModels.LoginViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
-    private LoginViewModel loginViewModel;
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login_panel, container, false); // zakładam, że masz już nowy layout
+        return inflater.inflate(R.layout.fragment_login_panel, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        mAuth = FirebaseAuth.getInstance();
         EditText usernameEt = view.findViewById(R.id.editTextUsername);
         EditText passwordEt = view.findViewById(R.id.editTextPassword);
         Button loginButton = view.findViewById(R.id.button_login);
 
         loginButton.setOnClickListener(v -> {
-            String username = usernameEt.getText().toString();
+            String email = usernameEt.getText().toString();
             String password = passwordEt.getText().toString();
 
-            loginViewModel.login(username, password).observe(getViewLifecycleOwner(), user -> {
-                Log.d("Login", "Próba loginu: " + username + " / " + password + " -> " + (user != null));
-                if (user != null) {
-                    // ZAPISZ userId do SharedPreferences
-                    SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-                    prefs.edit().putInt("user_id", user.getId()).apply();
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Podaj e-mail i hasło", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    // Przejście do HomeFragment
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
-                } else {
-                    Toast.makeText(getContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
-                }
-            });
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getContext(), "Zalogowano!", Toast.LENGTH_SHORT).show();
+                            // Tutaj możesz przejść do następnego ekranu, np.
+                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                        } else {
+                            Toast.makeText(getContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
+
+        // (opcjonalnie) Obsługa rejestracji nowego użytkownika
+        Button registerButton = view.findViewById(R.id.button_register);
+        if (registerButton != null) {
+            registerButton.setOnClickListener(v -> {
+                String email = usernameEt.getText().toString();
+                String password = passwordEt.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getContext(), "Podaj e-mail i hasło", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Zarejestrowano i zalogowano!", Toast.LENGTH_SHORT).show();
+                                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                            } else {
+                                Toast.makeText(getContext(), "Błąd rejestracji: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            });
+        }
     }
 }

@@ -3,21 +3,16 @@ package com.example.financeapp;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.util.Log;
-
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.UserDao;
 import com.example.financeapp.ui.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.financeapp.databinding.ActivityMainBinding;
-
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
             Executors.newSingleThreadExecutor().execute(() -> {
                 AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
                 UserDao userDao = db.userDao();
-                userDao.insert(new User("user", "password"));
+                userDao.insert(new User("user", "123"));
                 prefs.edit().putBoolean("user_initialized", true).apply();
-                Log.d("UserInsert", "Dodano testowego usera: user/password");
             });
         }
     }

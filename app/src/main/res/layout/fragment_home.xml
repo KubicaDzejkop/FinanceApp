@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Dostępne środki -->
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100,00 PLN"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <!-- Przycisk Dodaj transakcję -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddTransaction"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/purple_500"
+            android:shapeAppearance="@style/CircleButton"
+            android:text="Dodaj\ntransakcję"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <!-- Ostatnie transakcje -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ostatnie transakcje"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/btnShowMoreTransactions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Więcej"
+                android:textColor="@color/red"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecentTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Analiza finansowa - podsumowanie -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Moje wydatki w tym miesiącu: 782,99 PLN"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/btnShowMoreAnalysis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Więcej"
+                android:textColor="@color/red"/>
+        </LinearLayout>
+
+        <!-- Wykres miesięczny -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="kwi"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="maj"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cze"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <!-- Nawigacja dolna -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

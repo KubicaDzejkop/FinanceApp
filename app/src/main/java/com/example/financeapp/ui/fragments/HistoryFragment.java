@@ -22,6 +22,8 @@ import com.example.financeapp.ui.adapters.TransactionsAdapter;
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.TransactionRepository;
 
+import android.widget.TextView;
+
 public class HistoryFragment extends Fragment {
 
     private HistoryViewModel historyViewModel;
@@ -57,6 +59,13 @@ public class HistoryFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putInt("transactionId", transaction.getId());
             Navigation.findNavController(view).navigate(R.id.action_historyFragment_to_transactionDetailsFragment, bundle);
+        });
+
+        TextView analysisBtn = view.findViewById(R.id.text_analysis);
+        analysisBtn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("source", "history");
+            Navigation.findNavController(view).navigate(R.id.navigation_analysis, bundle);
         });
 
         return view;

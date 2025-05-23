@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/loginFragment"
+    >
 
     <fragment
         android:id="@+id/navigation_home"
@@ -13,13 +14,19 @@
 
         <action
             android:id="@+id/action_home_to_addTransactionFragment"
-            app:destination="@id/addTransactionFragment" />
+            app:destination="@id/addTransactionFragment"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_home_to_historyFragment"
-            app:destination="@id/navigation_history" />
+            app:destination="@id/navigation_history"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_home_to_analysisFragment"
-            app:destination="@id/navigation_analysis" />
+            app:destination="@id/navigation_analysis"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -52,9 +59,8 @@
         android:id="@+id/transactionDetailsFragment"
         android:name="com.example.financeapp.ui.fragments.TransactionDetailsFragment"
         android:label="Szczegóły transakcji"
-        tools:layout="@layout/fragment_transaction_details"  />
+        tools:layout="@layout/fragment_transaction_details" />
 
-    <!-- DODAJ TE FRAGMENTY, JEŚLI NIE MASZ ICH NIŻEJ W PLIKU! -->
     <fragment
         android:id="@+id/addTransactionFragment"
         android:name="com.example.financeapp.ui.fragments.AddTransactionFragment"
@@ -66,5 +72,4 @@
         android:name="com.example.financeapp.ui.fragments.AnalysisFragment"
         android:label="Analiza"
         tools:layout="@layout/fragment_analysis" />
-
 </navigation>

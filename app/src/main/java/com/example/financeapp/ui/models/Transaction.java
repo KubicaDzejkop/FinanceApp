@@ -8,7 +8,6 @@ public class Transaction {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int userId;
-
     private String recipient;
     private double amount;
     private String category;

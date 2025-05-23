@@ -19,6 +19,7 @@ import com.example.financeapp.ui.ViewModels.TransactionViewModelFactory;
 import com.example.financeapp.ui.adapters.RecentTransactionsAdapter;
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.TransactionRepository;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -73,10 +74,15 @@ public class HomeFragment extends Fragment {
 
         binding.btnShowMoreTransactions.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_home_to_historyFragment);
+            // Ustaw aktywny item menu na "Historia"
+            BottomNavigationView navView = requireActivity().findViewById(R.id.bottomNavigationView);
+            navView.setSelectedItemId(R.id.navigation_history);
         });
 
         binding.btnShowMoreAnalysis.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_home_to_analysisFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("source", "home");
+            Navigation.findNavController(v).navigate(R.id.navigation_analysis, bundle);
         });
     }
 }

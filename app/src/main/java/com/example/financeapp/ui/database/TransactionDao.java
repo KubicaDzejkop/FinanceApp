@@ -9,7 +9,7 @@ import com.example.financeapp.ui.models.Transaction;
 import java.util.List;
 
 @Dao
-public interface    TransactionDao {
+public interface TransactionDao {
     @Insert
     void insert(Transaction transaction);
 

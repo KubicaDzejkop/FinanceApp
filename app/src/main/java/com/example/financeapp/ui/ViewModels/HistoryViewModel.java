@@ -13,7 +13,7 @@ public class HistoryViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public LiveData<List<Transaction>> getAllTransactions(int userId) {
+    public LiveData<List<Transaction>> getAllTransactions(String userId) {
         return repository.getAllTransactions(userId);
     }
 }

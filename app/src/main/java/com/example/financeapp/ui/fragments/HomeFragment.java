@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private TransactionViewModel viewModel;
     private RecentTransactionsAdapter adapter;
 
-    private int userId = -1; // Inicjalizujemy domyślną wartością
+    private String userId = String.valueOf(-1); // Inicjalizujemy domyślną wartością
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
         // Pobieramy userId dopiero tutaj, gdy fragment jest już podłączony do activity
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        userId = prefs.getInt("user_id", -1);
+        userId = prefs.getString("user_id", String.valueOf(-1));
 
         setupRecyclerView();
         setupObservers();

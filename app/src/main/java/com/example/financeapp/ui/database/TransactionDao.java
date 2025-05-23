@@ -22,7 +22,6 @@ public interface TransactionDao {
     @Query("SELECT * FROM transactions ORDER BY date DESC")
     LiveData<List<Transaction>> getAllTransactions();
 
-
     @Query("SELECT * FROM transactions WHERE type = 'income' ORDER BY date DESC")
     LiveData<List<Transaction>> getAllIncomes();
 
@@ -43,17 +42,17 @@ public interface TransactionDao {
 
     @Query("SELECT SUM(amount) FROM transactions")
     LiveData<Double> getBalance();
-    @Query("SELECT * FROM transactions WHERE userId=:userId ORDER BY date DESC")
-    LiveData<List<Transaction>> getAllTransactions(int userId);
 
-    @Query("SELECT * FROM transactions WHERE userId=:userId ORDER BY date DESC LIMIT 3")
-    LiveData<List<Transaction>> getRecentTransactions(int userId);
+    // userId jako String
+    @Query("SELECT * FROM transactions WHERE userId = :userId ORDER BY date DESC")
+    LiveData<List<Transaction>> getAllTransactions(String userId);
 
-    @Query("SELECT SUM(amount) FROM transactions WHERE userId=:userId AND type='income'")
-    LiveData<Double> getTotalIncomes(int userId);
+    @Query("SELECT * FROM transactions WHERE userId = :userId ORDER BY date DESC LIMIT 3")
+    LiveData<List<Transaction>> getRecentTransactions(String userId);
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE userId = :userId AND type = 'income'")
+    LiveData<Double> getTotalIncomes(String userId);
+
     @Query("SELECT * FROM transactions WHERE id = :transactionId AND userId = :userId LIMIT 1")
-    LiveData<Transaction> getTransactionById(int transactionId, int userId);
-
-
-
+    LiveData<Transaction> getTransactionById(int transactionId, String userId);
 }

@@ -64,11 +64,11 @@
             android:id="@+id/text_avg_spending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingBottom="16dp"
             android:text="693,26pln"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp"
-            android:layout_gravity="start"/>
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"

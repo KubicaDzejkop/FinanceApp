@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public class TransactionRepository {
     private final TransactionDao transactionDao;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -15,7 +14,7 @@ public class TransactionRepository {
         this.transactionDao = dao;
     }
 
-    public LiveData<List<Transaction>> getAllTransactions(int userId) {
+    public LiveData<List<Transaction>> getAllTransactions(String userId) {
         return transactionDao.getAllTransactions(userId);
     }
 
@@ -57,10 +56,9 @@ public class TransactionRepository {
 
     public void deleteById(int id) {
         executorService.execute(() -> transactionDao.deleteById(id));
-
     }
-    public LiveData<Transaction> getTransactionById(int transactionId, int userId) {
-        return transactionDao.getTransactionById(transactionId, userId);
 
+    public LiveData<Transaction> getTransactionById(int transactionId, String userId) {
+        return transactionDao.getTransactionById(transactionId, userId);
     }
 }

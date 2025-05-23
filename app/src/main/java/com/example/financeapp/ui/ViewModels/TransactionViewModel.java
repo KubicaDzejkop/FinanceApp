@@ -24,7 +24,7 @@ public class TransactionViewModel extends ViewModel {
     }
 
     // Teraz przekazujesz userId!
-    public LiveData<List<Transaction>> getTransactions(int userId) {
+    public LiveData<List<Transaction>> getTransactions(String userId) {
         return repository.getAllTransactions(userId);
     }
 

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Transaction {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int userId;
+    private String userId;
     private String recipient;
     private double amount;
     private String category;
@@ -15,18 +15,21 @@ public class Transaction {
     private String type; // "income" lub "expense"
 
     // Konstruktor
-    public Transaction(int userId, String recipient, double amount, String category, String date, String type) {
+    public Transaction(String userId, String recipient, double amount, String category, String date, String type) {
+        this.userId = userId;
         this.recipient = recipient;
         this.amount = amount;
         this.category = category;
         this.date = date;
         this.type = type;
-        this.userId = userId;
     }
 
     // Gettery i settery
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getRecipient() { return recipient; }
     public void setRecipient(String recipient) { this.recipient = recipient; }
@@ -42,6 +45,4 @@ public class Transaction {
 
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
 }

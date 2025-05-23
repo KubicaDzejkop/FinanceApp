@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import com.example.financeapp.ui.models.Transaction;
 import com.example.financeapp.ui.models.User;
 
-@Database(entities = {User.class, Transaction.class}, version = 1)
+@Database(entities = {User.class, Transaction.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
 

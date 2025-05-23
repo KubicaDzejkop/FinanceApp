@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.financeapp.R;
 import com.example.financeapp.ui.ViewModels.TransactionDetailsViewModel;
@@ -34,12 +36,19 @@ public class TransactionDetailsFragment extends Fragment {
         category = view.findViewById(R.id.text_operation_category);
         type = view.findViewById(R.id.text_operation_type);
 
+        // Obsługa cofania strzałką
+        ImageButton backButton = view.findViewById(R.id.button_back);
+        backButton.setOnClickListener(v -> {
+            // Cofnij do historii (popBackStack cofa do ostatniego fragmentu)
+            Navigation.findNavController(view).popBackStack();
+        });
+
         // Odczytaj przekazane argumenty
         int transactionId = getArguments() != null ? getArguments().getInt("transactionId", -1) : -1;
 
         // Odczytaj userId z SharedPreferences
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        int userId = prefs.getInt("user_id", -1);
+        String userId = prefs.getString("user_id", String.valueOf(-1));
 
         // Zainicjalizuj ViewModel i Repozytorium
         viewModel = new ViewModelProvider(this).get(TransactionDetailsViewModel.class);

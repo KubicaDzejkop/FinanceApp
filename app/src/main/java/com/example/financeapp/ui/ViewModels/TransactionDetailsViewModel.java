@@ -12,7 +12,7 @@ public class TransactionDetailsViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public LiveData<Transaction> getTransactionById(int transactionId, int userId) {
+    public LiveData<Transaction> getTransactionById(int transactionId, String userId) {
         return repository.getTransactionById(transactionId, userId);
     }
 }

@@ -13,8 +13,10 @@ public class Transaction {
     private String category;
     private String date; // Format: YYYY-MM-DD
     private String type; // "income" lub "expense"
+    public boolean paid;
 
-    // Konstruktor
+
+
     public Transaction(String userId, String recipient, double amount, String category, String date, String type) {
         this.userId = userId;
         this.recipient = recipient;
@@ -24,7 +26,7 @@ public class Transaction {
         this.type = type;
     }
 
-    // Gettery i settery
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -45,4 +47,6 @@ public class Transaction {
 
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
+
+
 }

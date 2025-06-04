@@ -4,10 +4,13 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.models.Transaction;
 import com.example.financeapp.ui.models.User;
+import com.example.financeapp.ui.models.CategoryLimit; // <-- dodaj import
 
-@Database(entities = {User.class, Transaction.class}, version = 2)
+@Database(entities = {User.class, Transaction.class, CategoryLimit.class, BillReminder.class}, version = 6) // <-- dodaj CategoryLimit, zwiększ wersję
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
 
@@ -23,4 +26,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TransactionDao transactionDao();
     public abstract UserDao userDao();
+    public abstract CategoryLimitDao categoryLimitDao();
+    public abstract BillReminderDao billReminderDao();// <-- dodaj nowy DAO
 }

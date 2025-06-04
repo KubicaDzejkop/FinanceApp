@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.R;
 import com.example.financeapp.ui.models.Transaction;
+import com.example.financeapp.ui.models.TransactionListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
+public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Transaction> transactionList = new ArrayList<>();
+    private List<TransactionListItem> items = new ArrayList<>();
     private OnTransactionClickListener listener;
 
     public interface OnTransactionClickListener {
@@ -27,27 +28,54 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         this.listener = listener;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactionList = transactions != null ? transactions : new ArrayList<>();
+    public void setItems(List<TransactionListItem> items) {
+        this.items = items != null ? items : new ArrayList<>();
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).getType();
     }
 
     @NonNull
     @Override
-    public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_transaction, parent, false);
-        return new TransactionViewHolder(itemView, listener);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TransactionListItem.TYPE_DATE_HEADER) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_transaction_date_header, parent, false);
+            return new DateHeaderViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_transaction, parent, false);
+            return new TransactionViewHolder(v, listener);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        holder.bind(transactionList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        TransactionListItem item = items.get(position);
+        if (item.getType() == TransactionListItem.TYPE_DATE_HEADER) {
+            ((DateHeaderViewHolder) holder).bind(item.getDate());
+        } else if (item.getType() == TransactionListItem.TYPE_TRANSACTION) {
+            ((TransactionViewHolder) holder).bind(item.getTransaction());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return transactionList.size();
+        return items.size();
+    }
+
+    static class DateHeaderViewHolder extends RecyclerView.ViewHolder {
+        TextView tvDateHeader;
+        DateHeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvDateHeader = itemView.findViewById(R.id.tvDateHeader);
+        }
+        void bind(String date) {
+            tvDateHeader.setText(date);
+        }
     }
 
     static class TransactionViewHolder extends RecyclerView.ViewHolder {
@@ -68,6 +96,11 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         void bind(Transaction transaction) {
             recipient.setText(transaction.getRecipient());
             amount.setText(String.format("%.2f PLN", transaction.getAmount()));
+            if (transaction.getAmount() < 0) {
+                amount.setTextColor(itemView.getContext().getResources().getColor(android.R.color.holo_red_dark));
+            } else {
+                amount.setTextColor(itemView.getContext().getResources().getColor(android.R.color.holo_green_dark));
+            }
             itemView.setTag(transaction);
         }
     }

@@ -50,7 +50,6 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                // KROK 4: Zapis UID do SharedPreferences
                                 SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
                                 prefs.edit().putString("user_id", user.getUid()).apply();
                             }
@@ -77,7 +76,7 @@ public class LoginFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user != null) {
-                                    // KROK 4: Zapis UID do SharedPreferences po rejestracji
+
                                     SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
                                     prefs.edit().putString("user_id", user.getUid()).apply();
                                 }

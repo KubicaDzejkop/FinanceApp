@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment"
-    >
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.financeapp.ui.fragments.HomeFragment"
         android:label="Strona główna"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_home_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment"
@@ -43,7 +41,45 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.financeapp.ui.fragments.ProfileFragment"
         android:label="Profil"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_profileFragment_to_categoryLimitMenuFragment"
+            app:destination="@id/categoryLimitMenuFragment"/>
+        <!-- Akcja do listy przypomnień -->
+        <action
+            android:id="@+id/action_profileFragment_to_billReminderListFragment"
+            app:destination="@id/billReminderListFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryLimitMenuFragment"
+        android:name="com.example.financeapp.ui.fragments.CategoryLimitMenuFragment"
+        android:label="Limity kategorii"
+        tools:layout="@layout/fragment_category_limit_menu">
+        <action
+            android:id="@+id/action_menu_to_setLimit"
+            app:destination="@id/setCategoryLimitFragment"/>
+        <action
+            android:id="@+id/action_menu_to_showLimitUsage"
+            app:destination="@id/categoryLimitUsageFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/setCategoryLimitFragment"
+        android:name="com.example.financeapp.ui.fragments.SetCategoryLimitFragment"
+        android:label="Ustaw limit"
+        tools:layout="@layout/fragment_set_category_limit"/>
+
+    <fragment
+        android:id="@+id/categoryLimitUsageFragment"
+        android:name="com.example.financeapp.ui.fragments.CategoryLimitUsageFragment"
+        android:label="Zużycie limitu"
+        tools:layout="@layout/fragment_category_limit_usage"/>
 
     <fragment
         android:id="@+id/loginFragment"
@@ -72,4 +108,30 @@
         android:name="com.example.financeapp.ui.fragments.AnalysisFragment"
         android:label="Analiza"
         tools:layout="@layout/fragment_analysis" />
+
+    <!-- FRAGMENTY DLA SYSTEMU PRZYPOMNIEŃ (WIADOMOŚCI) -->
+    <fragment
+        android:id="@+id/billReminderListFragment"
+        android:name="com.example.financeapp.ui.fragments.BillReminderListFragment"
+        android:label="Wiadomości"
+        tools:layout="@layout/fragment_bill_reminder_list">
+        <action
+            android:id="@+id/action_billReminderListFragment_to_billReminderDetailFragment"
+            app:destination="@id/billReminderDetailFragment"/>
+        <action
+            android:id="@+id/action_billReminderListFragment_to_addBillReminderFragment"
+            app:destination="@id/addBillReminderFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/billReminderDetailFragment"
+        android:name="com.example.financeapp.ui.fragments.BillReminderDetailFragment"
+        android:label="Szczegóły rachunku"
+        tools:layout="@layout/fragment_bill_reminder_detail"/>
+
+    <fragment
+        android:id="@+id/addBillReminderFragment"
+        android:name="com.example.financeapp.ui.fragments.AddBillReminderFragment"
+        android:label="Dodaj przypomnienie"
+        tools:layout="@layout/fragment_add_bill_reminder"/>
 </navigation>

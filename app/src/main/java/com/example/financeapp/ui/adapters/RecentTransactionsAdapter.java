@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.R;
@@ -51,6 +52,7 @@ public class RecentTransactionsAdapter extends RecyclerView.Adapter<RecentTransa
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView recipient, amount;
+        private Transaction transaction;
 
         public ViewHolder(@NonNull View itemView, final OnTransactionClickListener listener) {
             super(itemView);
@@ -59,15 +61,22 @@ public class RecentTransactionsAdapter extends RecyclerView.Adapter<RecentTransa
 
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onTransactionClick((Transaction) v.getTag());
+                    listener.onTransactionClick(transaction);
                 }
             });
         }
 
         public void bind(Transaction transaction) {
+            this.transaction = transaction;
             recipient.setText(transaction.getRecipient());
-            amount.setText(String.format("%.2f PLN", transaction.getAmount()));
-            itemView.setTag(transaction);
+            double value = transaction.getAmount();
+            amount.setText(String.format("%.2f PLN", value));
+
+            if (value > 0) {
+                amount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
+            } else {
+                amount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
+            }
         }
     }
 }

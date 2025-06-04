@@ -19,7 +19,9 @@
             android:layout_height="100dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/purple_500"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="Dostępne środki"
                     android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <TextView
@@ -41,29 +43,29 @@
                     android:layout_height="wrap_content"
                     android:text="100,00PLN"
                     android:textSize="26sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Przycisk Dodaj transakcję (kółko) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddTransaction"
+        <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/circle_background"
             android:backgroundTint="@color/purple_500"
-            app:cornerRadius="36dp"/>
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dodaj transakcję"
-            android:textSize="14sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/black" />
+            <ImageView
+                android:id="@+id/btnAddTransaction"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/transaction"
+                app:tint="@color/white"/>
+        </FrameLayout>
 
         <!-- Historia transakcji (DYNAMICZNA) -->
         <androidx.cardview.widget.CardView
@@ -78,7 +80,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@color/purple_500"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,7 +97,7 @@
                         android:text="Ostatnie transakcje"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:id="@+id/btnShowMoreTransactions"
@@ -109,39 +113,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Analiza finansowa -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="217dp"
+            android:layout_marginBottom="32dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="32dp">
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="match_parent"
+                android:background="@color/purple_500"
                 android:orientation="vertical"
-                android:padding="16dp"
-                >
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Analiza finansowa"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/btnShowMoreAnalysis"
@@ -149,35 +154,35 @@
                         android:layout_height="wrap_content"
                         android:text="Więcej"
                         android:textColor="@color/red"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Moje wydatki w tym miesiącu:"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="15sp"/>
+                    android:text="Moje wydatki w tym miesiącu:"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvMonthlySpending"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:text="782,99pln"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:textStyle="bold" />
 
                 <!-- Przykładowy wykres słupkowy jako layout (do zamiany na wykres dynamiczny) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
                     android:gravity="bottom|center_horizontal"
-                    android:layout_marginTop="8dp">
+                    android:orientation="horizontal">
 
                     <!-- Słupek 1 -->
                     <LinearLayout
@@ -188,14 +193,16 @@
                         android:orientation="vertical">
 
                         <View
+                            android:id="@+id/barMarch"
                             android:layout_width="14dp"
-                            android:layout_height="50dp"
-                            android:background="@color/black"/>
+                            android:layout_height="100dp"
+                            android:background="@color/white" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="kwi"
-                            android:textSize="12sp"/>
+                            android:text="Marzec"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <!-- Słupek 2 -->
@@ -207,14 +214,16 @@
                         android:orientation="vertical">
 
                         <View
+                            android:id="@+id/barApril"
                             android:layout_width="14dp"
-                            android:layout_height="70dp"
-                            android:background="@color/black"/>
+                            android:layout_height="100dp"
+                            android:background="@color/white" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="maj"
-                            android:textSize="12sp"/>
+                            android:text="Kwiecień"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <!-- Słupek 3 -->
@@ -226,20 +235,20 @@
                         android:orientation="vertical">
 
                         <View
+                            android:id="@+id/barMay"
                             android:layout_width="14dp"
-                            android:layout_height="40dp"
-                            android:background="@color/black"/>
+                            android:layout_height="100dp"
+                            android:background="@color/white" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="cze"
-                            android:textSize="12sp"/>
+                            android:text="Maj"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <!-- Spacer na bottom navigation -->
         <View
             android:layout_width="match_parent"
             android:layout_height="64dp"/>

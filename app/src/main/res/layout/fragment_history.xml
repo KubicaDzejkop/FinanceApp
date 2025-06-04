@@ -24,6 +24,7 @@
             android:layout_weight="1"
             android:text="Historia"
             android:textSize="20sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="start"/>
 
@@ -49,9 +50,17 @@
         android:hint="Szukaj w historii transakcji"
         android:paddingHorizontal="12dp"
         android:textSize="16sp"
+        android:textColorHint="@color/white"
+        android:backgroundTint="@color/purple_500"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:drawablePadding="8dp"
+        android:drawableTint="@color/white"
         android:layout_marginBottom="16dp"/>
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <!-- RecyclerView na transakcje -->
     <androidx.recyclerview.widget.RecyclerView

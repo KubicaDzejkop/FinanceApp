@@ -20,13 +20,18 @@ import com.example.financeapp.ui.adapters.RecentTransactionsAdapter;
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.TransactionRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.financeapp.ui.models.MonthlyExpense;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TransactionViewModel viewModel;
     private RecentTransactionsAdapter adapter;
 
-    private String userId = String.valueOf(-1); // Inicjalizujemy domyślną wartością
+    private String userId = String.valueOf(-1);
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class HomeFragment extends Fragment {
         TransactionViewModelFactory factory = new TransactionViewModelFactory(repository);
         viewModel = new ViewModelProvider(requireActivity(), factory).get(TransactionViewModel.class);
 
-        // Pobieramy userId dopiero tutaj, gdy fragment jest już podłączony do activity
+
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         userId = prefs.getString("user_id", String.valueOf(-1));
 
@@ -54,7 +59,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupObservers() {
-        viewModel.getBalance().observe(getViewLifecycleOwner(), balance -> {
+        viewModel.getBalance(userId).observe(getViewLifecycleOwner(), balance -> {
             binding.tvBalance.setText(String.format("%.2f PLN", balance != null ? balance : 0.0));
         });
 
@@ -65,6 +70,51 @@ public class HomeFragment extends Fragment {
                 adapter.submitList(transactions);
             }
         });
+
+
+        Calendar cal = Calendar.getInstance();
+        String month = String.format(Locale.US, "%02d", cal.get(Calendar.MONTH) + 1); // 01-12
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        viewModel.getMonthlyExpenses(userId, month, year).observe(getViewLifecycleOwner(), sum -> {
+            double value = sum != null ? Math.abs(sum) : 0.0;
+            binding.tvMonthlySpending.setText(String.format("%.2f PLN", value));
+        });
+
+
+        String prevYear = String.valueOf(cal.get(Calendar.YEAR) - 1);
+        String[] monthLabels = {"mar", "kwi", "maj"};
+        String[] monthNumbers = {"03", "04", "05"};
+
+        viewModel.getLast3MonthsExpenses(userId, year, prevYear).observe(getViewLifecycleOwner(), list -> {
+
+            Map<String, Double> expensesMap = new HashMap<>();
+            for (int i = 0; i < monthNumbers.length; i++) {
+                expensesMap.put(monthNumbers[i], 0.0);
+            }
+            if (list != null) {
+                for (MonthlyExpense m : list) {
+                    if (expensesMap.containsKey(m.month)) {
+                        expensesMap.put(m.month, Math.abs(m.total));
+                    }
+                }
+            }
+
+            double max = 0;
+            for (double val : expensesMap.values()) if (val > max) max = val;
+
+
+            int[] barIds = {R.id.barMarch, R.id.barApril, R.id.barMay};
+            for (int i = 0; i < monthNumbers.length; i++) {
+                double amount = expensesMap.get(monthNumbers[i]);
+                int barHeight = max > 0 ? (int)(60 * amount / max) + 10 : 10;
+                View bar = binding.getRoot().findViewById(barIds[i]);
+                ViewGroup.LayoutParams params = bar.getLayoutParams();
+                params.height = barHeight;
+                bar.setLayoutParams(params);
+
+            }
+
+        });
     }
 
     private void setupClickListeners() {
@@ -74,7 +124,7 @@ public class HomeFragment extends Fragment {
 
         binding.btnShowMoreTransactions.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_home_to_historyFragment);
-            // Ustaw aktywny item menu na "Historia"
+
             BottomNavigationView navView = requireActivity().findViewById(R.id.bottomNavigationView);
             navView.setSelectedItemId(R.id.navigation_history);
         });

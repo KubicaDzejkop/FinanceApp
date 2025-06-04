@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:fitsSystemWindows="false"
-    >
+    android:fitsSystemWindows="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,13 +22,12 @@
 
             <ImageView
                 android:id="@+id/btn_back_analysis"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_arrow_back"
                 android:contentDescription="Wróć"
-                android:padding="8dp"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/text_analysis_title"
@@ -38,6 +36,7 @@
                 android:text="Analiza finansowa"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp" />
         </LinearLayout>
 
@@ -49,8 +48,9 @@
             android:text="Wpływy i wydatki"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="start"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp" />
 
         <TextView
             android:id="@+id/text_avg_spending_label"
@@ -58,7 +58,8 @@
             android:layout_height="wrap_content"
             android:text="Średnio miesięcznie wydajesz:"
             android:textSize="15sp"
-            android:layout_gravity="start"/>
+            android:textColor="@color/black"
+            android:layout_gravity="start" />
 
         <TextView
             android:id="@+id/text_avg_spending"
@@ -68,13 +69,14 @@
             android:paddingBottom="16dp"
             android:text="693,26pln"
             android:textSize="18sp"
+            android:textColor="@color/purple_500"
             android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@android:color/black"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp" />
 
         <TextView
             android:id="@+id/text_chart_label"
@@ -83,81 +85,27 @@
             android:text="Wykres wpływów i wydatków"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="start"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp" />
 
-        <FrameLayout
-            android:id="@+id/chart_placeholder"
+        <!-- ZAMIANA chart_placeholder NA BarChart (jeśli używasz wykresu) -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="320dp"
             android:layout_marginBottom="8dp"
             android:background="@android:color/white"
             android:padding="8dp" />
 
-        <LinearLayout
-            android:id="@+id/months_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="14dp">
+        <!-- PASEK Z MIESIĄCAMI (zmień nazwy na luty, marzec, kwiecień, maj) -->
 
-            <TextView
-                android:id="@+id/text_month_1"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Mar"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:padding="4dp"/>
-            <TextView
-                android:id="@+id/text_month_2"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="kwie"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:padding="4dp"/>
-
-            <TextView
-                android:id="@+id/text_month_4"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="cze"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:padding="4dp"/>
-            <TextView
-                android:id="@+id/text_month_5"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="lip"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:padding="4dp"/>
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@android:color/black"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -165,19 +113,6 @@
             android:orientation="vertical"
             android:paddingTop="4dp"
             android:paddingBottom="8dp">
-
-            <TextView
-                android:id="@+id/text_month_3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="maj"
-                android:textSize="15sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,15 +126,17 @@
                     android:layout_height="wrap_content"
                     android:text="Wpływy:"
                     android:textSize="15sp"
-                    android:layout_gravity="start"/>
+                    android:textColor="@color/black"
+                    android:layout_gravity="start" />
                 <TextView
                     android:id="@+id/text_total_incomes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1010,26pln"
+                    android:textColor="@color/purple_500"
                     android:textStyle="bold"
                     android:textSize="15sp"
-                    android:paddingStart="10dp"/>
+                    android:paddingStart="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -213,7 +150,8 @@
                     android:layout_height="wrap_content"
                     android:text="Wydatki:"
                     android:textSize="15sp"
-                    android:layout_gravity="start"/>
+                    android:textColor="@color/black"
+                    android:layout_gravity="start" />
                 <TextView
                     android:id="@+id/text_total_outcomes"
                     android:layout_width="wrap_content"
@@ -221,7 +159,8 @@
                     android:text="509,26pln"
                     android:textStyle="bold"
                     android:textSize="15sp"
-                    android:paddingStart="10dp"/>
+                    android:textColor="@color/purple_500"
+                    android:paddingStart="10dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

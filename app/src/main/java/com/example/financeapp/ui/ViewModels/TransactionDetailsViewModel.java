@@ -15,4 +15,7 @@ public class TransactionDetailsViewModel extends ViewModel {
     public LiveData<Transaction> getTransactionById(int transactionId, String userId) {
         return repository.getTransactionById(transactionId, userId);
     }
+    public void updateTransaction(Transaction transaction) {
+        repository.update(transaction);
+    }
 }

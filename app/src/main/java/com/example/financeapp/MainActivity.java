@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Dodaj usera tylko raz (np. przy pierwszym uruchomieniu apki)
         SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
         boolean userInit = prefs.getBoolean("user_initialized", false);
         if (!userInit) {

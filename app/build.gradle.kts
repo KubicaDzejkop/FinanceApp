@@ -19,6 +19,7 @@ android {
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -64,6 +65,12 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.6.2")
     implementation ("com.github.PhilJay:MPAndroidChart:3.1.0")
-    implementation ("androidx.room:room-runtime:2.4.0")
-    annotationProcessor ("androidx.room:room-compiler:2.4.0")
+
+    implementation ("androidx.work:work-runtime:2.9.0")
+
+//    implementation ("androidx.room:room-runtime:2.4.0")
+//    annotationProcessor ("androidx.room:room-compiler:2.4.0")
+
+//    implementation ("com.facebook.stetho:stetho:1.6.0")
+//    implementation ("com.facebook.stetho:stetho-sqlite:1.6.0")
 }

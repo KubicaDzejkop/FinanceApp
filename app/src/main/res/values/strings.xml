@@ -3,4 +3,18 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string-array name="categories_array">
+        <item>Wybierz kategorię</item>
+        <item>Rozrywka</item>
+        <item>Rachunki</item>
+        <item>Jedzenie</item>
+        <item>Praca</item>
+        <item>Transport</item>
+        <item>Zdrowie</item>
+        <item>Zakupy</item>
+        <item>Wynagrodzenie</item>
+        <item>Zwrot</item>
+        <item>Żywność</item>
+        <item>Inne</item>
+    </string-array>
 </resources>

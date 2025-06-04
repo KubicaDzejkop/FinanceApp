@@ -11,9 +11,10 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Teraz getDatabase() jest dostępne
+
         AppDatabase database = AppDatabase.getDatabase(this);
         repository = new TransactionRepository(database.transactionDao());
+
     }
 
     public TransactionRepository getRepository() {

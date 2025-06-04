@@ -5,12 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:fitsSystemWindows="false"
-    >
+    android:fitsSystemWindows="false">
 
-    <!-- Back arrow -->
-
-    <!-- Circle avatar (app logo/photo) -->
+    <!-- Logo -->
     <ImageView
         android:id="@+id/image_app_logo"
         android:layout_width="120dp"
@@ -22,10 +19,9 @@
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- App name -->
+    <!-- Nazwa aplikacji -->
     <TextView
         android:id="@+id/text_app_name"
         android:layout_width="wrap_content"
@@ -39,7 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Username field -->
+    <!-- Nazwa użytkownika -->
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="0dp"
@@ -55,24 +51,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.75"/>
 
-    <!-- Password field -->
-    <EditText
-        android:id="@+id/editTextPassword"
+    <!-- Kontener hasła z okiem -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/password_container"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:hint="Hasło"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_edittext"
-        android:paddingHorizontal="18dp"
-        android:textSize="16sp"
-        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/editTextUsername"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.75"/>
+        android:layout_marginTop="16dp"
+        app:layout_constraintWidth_percent="0.75">
 
-    <!-- Login button -->
+        <!-- Hasło -->
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Hasło"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_edittext"
+            android:paddingStart="18dp"
+            android:paddingEnd="48dp"
+            android:textSize="16sp"
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- Ikonka oka -->
+        <ImageView
+            android:id="@+id/imageViewShowPassword"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/password_eye"
+            android:contentDescription="Pokaż/ukryj hasło"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextPassword"
+            app:layout_constraintBottom_toBottomOf="@id/editTextPassword"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Przycisk logowania -->
     <Button
         android:id="@+id/button_login"
         android:layout_width="0dp"
@@ -82,11 +104,12 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         android:background="@drawable/rounded_button_border"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/password_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.75"/>
 
+    <!-- Przycisk rejestracji -->
     <Button
         android:id="@+id/button_register"
         android:layout_width="0dp"

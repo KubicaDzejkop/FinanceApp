@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +59,12 @@ public class CategoryLimitUsageFragment extends Fragment {
         adapter = new CategoryLimitUsageAdapter(new ArrayList<>());
         rvCategoryLimits.setAdapter(adapter);
 
+        ImageView btnBack = view.findViewById(R.id.btn_back_category_limit);
+        btnBack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.categoryLimitMenuFragment);
+        });
+
         categories = getResources().getStringArray(R.array.categories_array);
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
@@ -90,9 +99,7 @@ public class CategoryLimitUsageFragment extends Fragment {
                 categoryOrder.put(categories[i], i - startIdx); // 0,1,2...
             }
 
-
             final int[] loadedCount = {0};
-
             final CategoryLimitUsageAdapter.RowData[] tempRows = new CategoryLimitUsageAdapter.RowData[categoryCount];
 
             for (int i = startIdx; i < categories.length; i++) {
@@ -106,7 +113,6 @@ public class CategoryLimitUsageFragment extends Fragment {
                             double percent = (limit > 0) ? (used / limit) * 100.0 : 0.0;
                             tempRows[pos] = new CategoryLimitUsageAdapter.RowData(category, limit, percent);
                             loadedCount[0]++;
-
 
                             if (loadedCount[0] == categoryCount) {
                                 rows.clear();

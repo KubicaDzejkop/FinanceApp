@@ -26,8 +26,14 @@ public class CategoryLimitMenuFragment extends Fragment {
 
         Button btnSet = view.findViewById(R.id.btnSetLimit);
         Button btnShow = view.findViewById(R.id.btnShowUsage);
+        View btnBack = view.findViewById(R.id.btnBack);
 
         btnSet.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_menu_to_setLimit));
         btnShow.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_menu_to_showLimitUsage));
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v ->
+                    Navigation.findNavController(v).navigate(R.id.action_categoryLimitMenuFragment_to_profileFragment)
+            );
+        }
     }
 }

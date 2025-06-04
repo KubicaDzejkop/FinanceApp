@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
 
 import com.example.financeapp.R;
 import com.example.financeapp.ui.adapters.BillReminderAdapter;
@@ -33,6 +37,12 @@ public class BillReminderListFragment extends Fragment {
         adapter = new BillReminderAdapter();
         recyclerView.setAdapter(adapter);
 
+        ImageView btnBack = view.findViewById(R.id.btn_back_bill_reminder);
+        btnBack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.navigation_profile);
+        });
+
         return view;
     }
 
@@ -44,6 +54,17 @@ public class BillReminderListFragment extends Fragment {
         BillReminderRepository repo = new BillReminderRepository(AppDatabase.getDatabase(requireContext()).billReminderDao());
         BillReminderViewModelFactory factory = new BillReminderViewModelFactory(repo);
         viewModel = new ViewModelProvider(this, factory).get(BillReminderViewModel.class);
+
+        adapter.setOnPaidClickListener(reminder -> {
+            reminder.paid = true;
+            viewModel.update(reminder);
+            Toast.makeText(requireContext(), "Oznaczono jako opłacone", Toast.LENGTH_SHORT).show();
+        });
+
+        adapter.setOnDeleteClickListener(reminder -> {
+            viewModel.delete(reminder);
+            Toast.makeText(requireContext(), "Przypomnienie usunięte", Toast.LENGTH_SHORT).show();
+        });
 
         viewModel.getAll(userId).observe(getViewLifecycleOwner(), reminders -> {
             adapter.setData(reminders);

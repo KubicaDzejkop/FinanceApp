@@ -3,18 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="12dp">
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="12dp">
 
+    <!-- Tytuł na środku -->
     <TextView
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tytuł przypomnienia"
+        android:text="Tytuł"
         android:textSize="18sp"
+        android:textColor="#222222"
         android:textStyle="bold"
-        android:paddingBottom="8dp" />
+        android:gravity="center"
+        android:paddingBottom="6dp"
+        android:ellipsize="end"
+        android:maxLines="1" />
 
+    <!-- Separator pod tytułem -->
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Rozwijana część -->
     <LinearLayout
         android:id="@+id/layout_expandable"
         android:layout_width="match_parent"
@@ -23,17 +37,53 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/text_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Opis przypomnienia"
-            android:paddingBottom="4dp" />
-
-        <TextView
             android:id="@+id/text_due_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Termin: 2025-06-05"
-            android:textStyle="italic" />
+            android:text="Data: 01.06.2025"
+            android:textColor="#222222"
+            android:textSize="15sp"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/text_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status: Nieopłacony"
+            android:textColor="#D32F2F"
+            android:textSize="15sp"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Opis: Treść przypomnienia"
+            android:textColor="#222222"
+            android:textSize="15sp"
+            android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/btn_paid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OZNACZ JAKO OPŁACONY"
+            android:backgroundTint="#7300FF"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USUŃ PRZYPOMNIENIE"
+            android:backgroundTint="#D32F2F"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

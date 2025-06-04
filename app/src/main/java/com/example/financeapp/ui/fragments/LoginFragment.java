@@ -3,11 +3,14 @@ package com.example.financeapp.ui.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private boolean isPasswordVisible = false;
 
     @Nullable
     @Override
@@ -35,9 +39,25 @@ public class LoginFragment extends Fragment {
         EditText usernameEt = view.findViewById(R.id.editTextUsername);
         EditText passwordEt = view.findViewById(R.id.editTextPassword);
         Button loginButton = view.findViewById(R.id.button_login);
+        Button registerButton = view.findViewById(R.id.button_register);
+        ImageView showPasswordIcon = view.findViewById(R.id.imageViewShowPassword);
+
+        if (showPasswordIcon != null) {
+            showPasswordIcon.setOnClickListener(v -> {
+                if (!isPasswordVisible) {
+                    passwordEt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    showPasswordIcon.setImageResource(R.drawable.password_eye_off);
+                } else {
+                    passwordEt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    showPasswordIcon.setImageResource(R.drawable.password_eye);
+                }
+                passwordEt.setSelection(passwordEt.getText().length());
+                isPasswordVisible = !isPasswordVisible;
+            });
+        }
 
         loginButton.setOnClickListener(v -> {
-            String email = usernameEt.getText().toString();
+            String email = usernameEt.getText().toString().trim();
             String password = passwordEt.getText().toString();
 
             if (email.isEmpty() || password.isEmpty()) {
@@ -61,10 +81,9 @@ public class LoginFragment extends Fragment {
                     });
         });
 
-        Button registerButton = view.findViewById(R.id.button_register);
         if (registerButton != null) {
             registerButton.setOnClickListener(v -> {
-                String email = usernameEt.getText().toString();
+                String email = usernameEt.getText().toString().trim();
                 String password = passwordEt.getText().toString();
 
                 if (email.isEmpty() || password.isEmpty()) {
@@ -76,7 +95,6 @@ public class LoginFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user != null) {
-
                                     SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
                                     prefs.edit().putString("user_id", user.getUid()).apply();
                                 }

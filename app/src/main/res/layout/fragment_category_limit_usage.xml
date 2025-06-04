@@ -5,14 +5,35 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zużycie limitów w kategoriach"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="24dp">
+
+        <ImageView
+            android:id="@+id/btn_back_category_limit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Wróć"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/text_header_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Zużycie limitów w kategoriach"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginRight="50dp"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,6 +49,7 @@
             android:text="Kategoria"
             android:textStyle="bold"
             android:textSize="14sp"
+            android:textColor="@color/black"
             android:gravity="center"/>
 
         <TextView
@@ -36,12 +58,14 @@
             android:text="Limit"
             android:textStyle="bold"
             android:textSize="14sp"
+            android:textColor="@color/black"
             android:gravity="center"/>
 
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="Zużycie"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="14sp"
             android:gravity="center"/>

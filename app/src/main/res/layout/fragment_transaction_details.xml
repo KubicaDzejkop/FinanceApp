@@ -12,21 +12,21 @@
         android:padding="20dp"
         android:gravity="center_horizontal">
 
-        <!-- Nagłówek z tytułem i przyciskiem strzałki -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="24dp">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/button_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_back"
-                android:contentDescription="Wstecz" />
+                android:contentDescription="Wstecz"
+                android:clickable="true"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/text_details_title"
@@ -36,10 +36,9 @@
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
 
-        <!-- Kwota -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,13 +65,13 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <!-- Odbiorca -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_button_border"
-            android:backgroundTint="@color/purple_500"          android:padding="10dp"
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
             android:layout_marginBottom="4dp">
             <TextView
                 android:id="@+id/text_recipient_label"
@@ -91,15 +90,14 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <!-- Data przelewu -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_button_border"
-            android:backgroundTint="@color/purple_500"           android:padding="10dp"
-            android:layout_marginBottom="4dp"
-            >
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
+            android:layout_marginBottom="4dp">
             <TextView
                 android:id="@+id/text_date_label"
                 android:layout_width="match_parent"
@@ -117,13 +115,13 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <!-- Numer transakcji -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_button_border"
-            android:backgroundTint="@color/purple_500"            android:padding="10dp"
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
             android:layout_marginBottom="4dp">
             <TextView
                 android:id="@+id/text_transaction_number_label"
@@ -142,13 +140,13 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <!-- Typ operacji -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_button_border"
-            android:backgroundTint="@color/purple_500"           android:padding="10dp"
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
             android:layout_marginBottom="4dp">
             <TextView
                 android:id="@+id/text_operation_type_label"
@@ -167,13 +165,13 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <!-- Kategoria operacji + Zmień -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/rounded_button_border"
-            android:backgroundTint="@color/purple_500"            android:padding="10dp"
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
             android:layout_marginBottom="4dp"
             android:gravity="center_vertical">
 
@@ -213,7 +211,6 @@
                 android:focusable="true"/>
         </LinearLayout>
 
-        <!-- Spinner na wybór kategorii, domyślnie ukryty -->
         <Spinner
             android:id="@+id/spinner_categories"
             android:layout_width="match_parent"
@@ -221,6 +218,5 @@
             android:visibility="gone"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
-
     </LinearLayout>
 </ScrollView>

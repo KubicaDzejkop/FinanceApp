@@ -50,7 +50,6 @@
         <action
             android:id="@+id/action_profileFragment_to_categoryLimitMenuFragment"
             app:destination="@id/categoryLimitMenuFragment"/>
-        <!-- Akcja do listy przypomnień -->
         <action
             android:id="@+id/action_profileFragment_to_billReminderListFragment"
             app:destination="@id/billReminderListFragment"/>
@@ -61,12 +60,18 @@
         android:name="com.example.financeapp.ui.fragments.CategoryLimitMenuFragment"
         android:label="Limity kategorii"
         tools:layout="@layout/fragment_category_limit_menu">
+
         <action
             android:id="@+id/action_menu_to_setLimit"
             app:destination="@id/setCategoryLimitFragment"/>
         <action
             android:id="@+id/action_menu_to_showLimitUsage"
             app:destination="@id/categoryLimitUsageFragment"/>
+        <action
+            android:id="@+id/action_categoryLimitMenuFragment_to_profileFragment"
+            app:destination="@id/navigation_profile"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <fragment
@@ -109,7 +114,6 @@
         android:label="Analiza"
         tools:layout="@layout/fragment_analysis" />
 
-    <!-- FRAGMENTY DLA SYSTEMU PRZYPOMNIEŃ (WIADOMOŚCI) -->
     <fragment
         android:id="@+id/billReminderListFragment"
         android:name="com.example.financeapp.ui.fragments.BillReminderListFragment"

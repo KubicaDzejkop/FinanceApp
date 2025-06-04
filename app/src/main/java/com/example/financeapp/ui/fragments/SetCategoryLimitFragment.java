@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -46,9 +47,15 @@ public class SetCategoryLimitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageView btnBack = view.findViewById(R.id.btn_back_set_limit);
+        btnBack.setOnClickListener(v -> {
+            Navigation.findNavController(v).popBackStack();
+        });
+
         spCategory = view.findViewById(R.id.spCategory);
         etLimitAmount = view.findViewById(R.id.etLimitAmount);
         Button btnSave = view.findViewById(R.id.btnSaveLimit);
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -60,6 +67,7 @@ public class SetCategoryLimitFragment extends Fragment {
         CategoryLimitRepository repository = new CategoryLimitRepository(AppDatabase.getDatabase(requireContext()).categoryLimitDao());
         CategoryLimitViewModelFactory factory = new CategoryLimitViewModelFactory(repository);
         limitViewModel = new ViewModelProvider(requireActivity(), factory).get(CategoryLimitViewModel.class);
+
 
         btnSave.setOnClickListener(v -> {
             String category = (String) spCategory.getSelectedItem();

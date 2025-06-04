@@ -1,5 +1,6 @@
 package com.example.financeapp.ui.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
+import androidx.work.*;
 import com.example.financeapp.R;
 import com.example.financeapp.ui.ViewModels.BillReminderViewModel;
 import com.example.financeapp.ui.ViewModels.BillReminderViewModelFactory;
@@ -21,7 +25,6 @@ import com.example.financeapp.ui.utils.BillNotificationWorker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import androidx.work.*;
 
 public class AddBillReminderFragment extends Fragment {
     @Nullable
@@ -36,6 +39,28 @@ public class AddBillReminderFragment extends Fragment {
         EditText etMessage = view.findViewById(R.id.etMessage);
         EditText etDueDate = view.findViewById(R.id.etDueDate);
         Button btnSave = view.findViewById(R.id.btnSaveReminder);
+        ImageView btnBack = view.findViewById(R.id.btn_back_reminder);
+
+        btnBack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.navigation_profile);
+        });
+
+        etDueDate.setFocusable(false);
+        etDueDate.setClickable(true);
+        etDueDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            DatePickerDialog dialog = new DatePickerDialog(getContext(),
+                    (view1, year, month, dayOfMonth) -> {
+                        String dateStr = String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                        etDueDate.setText(dateStr);
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
+            dialog.show();
+        });
 
         BillReminderRepository repo = new BillReminderRepository(AppDatabase.getDatabase(requireContext()).billReminderDao());
         BillReminderViewModelFactory factory = new BillReminderViewModelFactory(repo);
@@ -59,7 +84,7 @@ public class AddBillReminderFragment extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(sdf.parse(dueDate));
-                cal.add(Calendar.DAY_OF_MONTH, -1); // dzień przed
+                cal.add(Calendar.DAY_OF_MONTH, -1);
                 notifTime = cal.getTimeInMillis();
             } catch (Exception ignored) {}
 

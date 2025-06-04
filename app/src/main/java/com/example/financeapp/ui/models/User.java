@@ -8,7 +8,7 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String username;
-    private String password; // Uwaga: w produkcji hashowanie!
+    private String password;
 
     public User(String username, String password) {
         this.username = username;

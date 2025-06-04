@@ -8,7 +8,6 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<String> totalSpent = new MutableLiveData<>();
 
     public HomeViewModel() {
-        // Tutaj oblicz sumę wydatków (np. z bazy danych)
         totalSpent.setValue("1200.50");
     }
 

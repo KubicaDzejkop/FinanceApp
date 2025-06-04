@@ -11,5 +11,4 @@ public class ProfileViewModel extends ViewModel {
         return profileSummary;
     }
 
-    // Możesz dodać więcej logiki, np. pobieranie danych z bazy itd.
 }

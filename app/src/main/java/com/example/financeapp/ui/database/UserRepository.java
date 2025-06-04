@@ -14,7 +14,6 @@ public class UserRepository {
         this.userDao = db.userDao();
     }
 
-    // Zwraca LiveData jednorazowo na żądanie
     public LiveData<User> login(String username, String password) {
         MutableLiveData<User> result = new MutableLiveData<>();
         Executors.newSingleThreadExecutor().execute(() -> {

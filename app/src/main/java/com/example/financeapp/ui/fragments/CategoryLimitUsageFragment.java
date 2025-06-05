@@ -3,18 +3,14 @@ package com.example.financeapp.ui.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,10 +56,7 @@ public class CategoryLimitUsageFragment extends Fragment {
         rvCategoryLimits.setAdapter(adapter);
 
         ImageView btnBack = view.findViewById(R.id.btn_back_category_limit);
-        btnBack.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(v);
-            navController.navigate(R.id.categoryLimitMenuFragment);
-        });
+        btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
         categories = getResources().getStringArray(R.array.categories_array);
 
@@ -96,7 +89,7 @@ public class CategoryLimitUsageFragment extends Fragment {
             List<CategoryLimitUsageAdapter.RowData> rows = new ArrayList<>();
             Map<String, Integer> categoryOrder = new HashMap<>();
             for (int i = startIdx; i < categories.length; i++) {
-                categoryOrder.put(categories[i], i - startIdx); // 0,1,2...
+                categoryOrder.put(categories[i], i - startIdx);
             }
 
             final int[] loadedCount = {0};

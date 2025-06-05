@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,25 +49,20 @@ public class TransactionDetailsFragment extends Fragment {
         categoryChangeBtn = view.findViewById(R.id.text_category_change);
         spinnerCategories = view.findViewById(R.id.spinner_categories);
 
-
-        ImageButton backButton = view.findViewById(R.id.button_back);
+        // Poprawka: użyj ImageView jeśli w layout masz <ImageView ... id="button_back" ...>
+        ImageView backButton = view.findViewById(R.id.button_back);
         backButton.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
-
 
         transactionId = getArguments() != null ? getArguments().getInt("transactionId", -1) : -1;
 
-
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         userId = prefs.getString("user_id", String.valueOf(-1));
-
 
         viewModel = new ViewModelProvider(this).get(TransactionDetailsViewModel.class);
         TransactionRepository repository = new TransactionRepository(AppDatabase.getDatabase(requireContext()).transactionDao());
         viewModel.setRepository(repository);
 
-
         viewModel.getTransactionById(transactionId, userId).observe(getViewLifecycleOwner(), this::updateUI);
-
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -76,7 +70,6 @@ public class TransactionDetailsFragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         spinnerCategories.setAdapter(adapter);
-
 
         categoryChangeBtn.setOnClickListener(v -> {
             if (spinnerCategories.getVisibility() == View.VISIBLE) {
@@ -87,7 +80,6 @@ public class TransactionDetailsFragment extends Fragment {
                 spinnerCategories.setVisibility(View.VISIBLE);
             }
         });
-
 
         spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -121,7 +113,6 @@ public class TransactionDetailsFragment extends Fragment {
             date.setText(transaction.getDate());
             category.setText(transaction.getCategory());
             type.setText(transaction.getType().equals("income") ? "Przychód" : "Wydatek");
-
 
             String[] categories = getResources().getStringArray(R.array.categories_array);
             for (int i = 0; i < categories.length; i++) {

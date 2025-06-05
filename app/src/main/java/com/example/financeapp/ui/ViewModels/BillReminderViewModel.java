@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.financeapp.ui.database.BillReminderRepository;
 import com.example.financeapp.ui.models.BillReminder;
-
 import java.util.List;
 
 public class BillReminderViewModel extends ViewModel {

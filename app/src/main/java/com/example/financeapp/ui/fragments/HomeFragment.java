@@ -3,136 +3,267 @@ package com.example.financeapp.ui.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.financeapp.R;
-import com.example.financeapp.databinding.FragmentHomeBinding;
-import com.example.financeapp.ui.ViewModels.TransactionViewModel;
-import com.example.financeapp.ui.ViewModels.TransactionViewModelFactory;
-import com.example.financeapp.ui.adapters.RecentTransactionsAdapter;
+import com.example.financeapp.ui.adapters.TransactionsAdapter;
+import com.example.financeapp.ui.models.Transaction;
+import com.example.financeapp.ui.models.TransactionListItem;
 import com.example.financeapp.ui.database.AppDatabase;
-import com.example.financeapp.ui.database.TransactionRepository;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.financeapp.ui.models.MonthlyExpense;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
-    private FragmentHomeBinding binding;
-    private TransactionViewModel viewModel;
-    private RecentTransactionsAdapter adapter;
+    private TextView tvBalance, tvMonthlySpending;
+    private RecyclerView rvRecentTransactions;
+    private ImageView btnAddTransaction;
+    private TextView btnShowMoreTransactions, btnShowMoreAnalysis;
 
-    private String userId = String.valueOf(-1);
+    // Słupki wykresu i kwoty
+    private View barMarchIn, barMarchOut, barAprilIn, barAprilOut, barMayIn, barMayOut;
+    private TextView labelMarch, labelApril, labelMay;
+    private TextView valueMarchIn, valueMarchOut, valueAprilIn, valueAprilOut, valueMayIn, valueMayOut;
 
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        AppDatabase db = AppDatabase.getDatabase(requireContext());
-        TransactionRepository repository = new TransactionRepository(db.transactionDao());
-        TransactionViewModelFactory factory = new TransactionViewModelFactory(repository);
-        viewModel = new ViewModelProvider(requireActivity(), factory).get(TransactionViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        tvBalance = view.findViewById(R.id.tvBalance);
+        tvMonthlySpending = view.findViewById(R.id.tvMonthlySpending);
+        rvRecentTransactions = view.findViewById(R.id.rvRecentTransactions);
+        btnAddTransaction = view.findViewById(R.id.btnAddTransaction);
+        btnShowMoreTransactions = view.findViewById(R.id.btnShowMoreTransactions);
+        btnShowMoreAnalysis = view.findViewById(R.id.btnShowMoreAnalysis);
 
+        // Słupki i kwoty (IN/OUT osobno!)
+        barMarchIn = view.findViewById(R.id.barMarchIn);
+        barMarchOut = view.findViewById(R.id.barMarchOut);
+        barAprilIn = view.findViewById(R.id.barAprilIn);
+        barAprilOut = view.findViewById(R.id.barAprilOut);
+        barMayIn = view.findViewById(R.id.barMayIn);
+        barMayOut = view.findViewById(R.id.barMayOut);
 
+        labelMarch = view.findViewById(R.id.labelMarch);
+        labelApril = view.findViewById(R.id.labelApril);
+        labelMay = view.findViewById(R.id.labelMay);
+
+        valueMarchIn = view.findViewById(R.id.valueMarchIn);
+        valueMarchOut = view.findViewById(R.id.valueMarchOut);
+        valueAprilIn = view.findViewById(R.id.valueAprilIn);
+        valueAprilOut = view.findViewById(R.id.valueAprilOut);
+        valueMayIn = view.findViewById(R.id.valueMayIn);
+        valueMayOut = view.findViewById(R.id.valueMayOut);
+
+        // Jasny fioletowy kolor CardView Analiza i Ostatnie transakcje
+        CardView cardAnalysis = view.findViewById(R.id.cardAnalysis);
+        CardView cardTransactions = view.findViewById(R.id.cardTransactions);
+        int lightViolet = ContextCompat.getColor(requireContext(), R.color.light_violet);
+        if(cardAnalysis != null) cardAnalysis.setCardBackgroundColor(lightViolet);
+        if(cardTransactions != null) cardTransactions.setCardBackgroundColor(lightViolet);
+
+        rvRecentTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Przyciski
+        btnAddTransaction.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.addTransactionFragment)
+        );
+        btnShowMoreTransactions.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_home_to_historyFragment)
+        );
+        btnShowMoreAnalysis.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_home_to_analysisFragment)
+        );
+
+        // Zmień kolor przycisku "Więcej"
+        btnShowMoreTransactions.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+        btnShowMoreAnalysis.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+        btnShowMoreTransactions.setTypeface(null, Typeface.BOLD);
+        btnShowMoreAnalysis.setTypeface(null, Typeface.BOLD);
+
+        loadHomeData();
+        return view;
+    }
+
+    private String getShortMonthName(String date) {
+        if (date == null || date.length() < 7) return "";
+        String monthNum = date.substring(5, 7);
+        switch (monthNum) {
+            case "04": return "Kwi";
+            case "05": return "Maj";
+            case "06": return "Cze";
+            default: return "";
+        }
+    }
+
+    private void loadHomeData() {
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        userId = prefs.getString("user_id", String.valueOf(-1));
+        String uid = prefs.getString("user_id", null);
 
-        setupRecyclerView();
-        setupObservers();
-        setupClickListeners();
+        if (uid == null) {
+            tvBalance.setText("Brak danych użytkownika");
+            tvMonthlySpending.setText("Brak danych");
+            return;
+        }
 
-        return binding.getRoot();
-    }
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getDatabase(requireContext());
+            List<Transaction> transactions = db.transactionDao().getTransactionsForUser(uid);
 
-    private void setupRecyclerView() {
-        adapter = new RecentTransactionsAdapter();
-        binding.rvRecentTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rvRecentTransactions.setAdapter(adapter);
-    }
-
-    private void setupObservers() {
-        viewModel.getBalance(userId).observe(getViewLifecycleOwner(), balance -> {
-            binding.tvBalance.setText(String.format("%.2f PLN", balance != null ? balance : 0.0));
-        });
-
-        viewModel.getTransactions(userId).observe(getViewLifecycleOwner(), transactions -> {
-            if (transactions != null && transactions.size() > 5) {
-                adapter.submitList(transactions.subList(0, 5));
-            } else {
-                adapter.submitList(transactions);
-            }
-        });
-
-
-        Calendar cal = Calendar.getInstance();
-        String month = String.format(Locale.US, "%02d", cal.get(Calendar.MONTH) + 1); // 01-12
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        viewModel.getMonthlyExpenses(userId, month, year).observe(getViewLifecycleOwner(), sum -> {
-            double value = sum != null ? Math.abs(sum) : 0.0;
-            binding.tvMonthlySpending.setText(String.format("%.2f PLN", value));
-        });
-
-
-        String prevYear = String.valueOf(cal.get(Calendar.YEAR) - 1);
-        String[] monthLabels = {"mar", "kwi", "maj"};
-        String[] monthNumbers = {"03", "04", "05"};
-
-        viewModel.getLast3MonthsExpenses(userId, year, prevYear).observe(getViewLifecycleOwner(), list -> {
-
-            Map<String, Double> expensesMap = new HashMap<>();
-            for (int i = 0; i < monthNumbers.length; i++) {
-                expensesMap.put(monthNumbers[i], 0.0);
-            }
-            if (list != null) {
-                for (MonthlyExpense m : list) {
-                    if (expensesMap.containsKey(m.month)) {
-                        expensesMap.put(m.month, Math.abs(m.total));
-                    }
+            double saldo = 0;
+            double monthlySpending = 0;
+            String currentMonth = "2025-06";
+            for (Transaction t : transactions) {
+                saldo += t.getAmount();
+                if (t.getDate().startsWith(currentMonth) && t.getAmount() < 0) {
+                    monthlySpending += -t.getAmount();
                 }
             }
-
-            double max = 0;
-            for (double val : expensesMap.values()) if (val > max) max = val;
-
-
-            int[] barIds = {R.id.barMarch, R.id.barApril, R.id.barMay};
-            for (int i = 0; i < monthNumbers.length; i++) {
-                double amount = expensesMap.get(monthNumbers[i]);
-                int barHeight = max > 0 ? (int)(60 * amount / max) + 10 : 10;
-                View bar = binding.getRoot().findViewById(barIds[i]);
-                ViewGroup.LayoutParams params = bar.getLayoutParams();
-                params.height = barHeight;
-                bar.setLayoutParams(params);
-
+            final double saldoFinal = saldo;
+            final double monthlySpendingFinal = monthlySpending;
+            final List<Transaction> lastTransactions = transactions.size() > 5 ? transactions.subList(0, 5) : transactions;
+            final List<TransactionListItem> items = new ArrayList<>();
+            for (Transaction t : lastTransactions) {
+                items.add(TransactionListItem.transactionItem(t));
             }
 
-        });
-    }
+            // Dane do wykresu - przychody i wydatki osobno
+            String[] months = new String[]{"Kwi", "Maj", "Cze"};
+            Map<String, Float> incomesPerMonth = new HashMap<>();
+            Map<String, Float> outcomesPerMonth = new HashMap<>();
+            for (Transaction t : transactions) {
+                String month = getShortMonthName(t.getDate());
+                float amount = (float) t.getAmount();
+                if ("income".equals(t.getType())) {
+                    incomesPerMonth.put(month, incomesPerMonth.getOrDefault(month, 0f) + amount);
+                } else {
+                    outcomesPerMonth.put(month, outcomesPerMonth.getOrDefault(month, 0f) + Math.abs(amount));
+                }
+            }
+            float[] incomeVals = new float[3];
+            float[] outcomeVals = new float[3];
+            for (int i = 0; i < 3; i++) {
+                incomeVals[i] = incomesPerMonth.getOrDefault(months[i], 0f);
+                outcomeVals[i] = outcomesPerMonth.getOrDefault(months[i], 0f);
+            }
+            float max = Math.max(
+                    Math.max(incomeVals[0], outcomeVals[0]),
+                    Math.max(Math.max(incomeVals[1], outcomeVals[1]), Math.max(incomeVals[2], outcomeVals[2]))
+            );
+            int maxBarHeight = 120;
+            int[] incomeHeights = new int[3];
+            int[] outcomeHeights = new int[3];
+            for (int i = 0; i < 3; i++) {
+                incomeHeights[i] = max > 0 ? Math.round((incomeVals[i] / max) * maxBarHeight) : 0;
+                outcomeHeights[i] = max > 0 ? Math.round((outcomeVals[i] / max) * maxBarHeight) : 0;
+            }
 
-    private void setupClickListeners() {
-        binding.btnAddTransaction.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_home_to_addTransactionFragment);
-        });
+            requireActivity().runOnUiThread(() -> {
+                tvBalance.setText(String.format("%.2f PLN", saldoFinal));
+                tvMonthlySpending.setText(String.format("%.2f PLN", monthlySpendingFinal));
 
-        binding.btnShowMoreTransactions.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_home_to_historyFragment);
+                TransactionsAdapter adapter = new TransactionsAdapter();
+                adapter.setItems(items);
+                adapter.setOnBindViewHolderListener((holder, transaction) -> {
+                    TextView tvRecipient = holder.itemView.findViewById(R.id.tvRecipient);
+                    TextView tvAmount = holder.itemView.findViewById(R.id.tvAmount);
+                    tvRecipient.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+                    if (transaction.getAmount() >= 0) {
+                        tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.green2));
+                    } else {
+                        tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.red2));
+                    }
+                    tvAmount.setTypeface(null, Typeface.BOLD);
+                });
+                rvRecentTransactions.setAdapter(adapter);
 
-            BottomNavigationView navView = requireActivity().findViewById(R.id.bottomNavigationView);
-            navView.setSelectedItemId(R.id.navigation_history);
-        });
+                int green = ContextCompat.getColor(requireContext(), R.color.green2);
+                int red = ContextCompat.getColor(requireContext(), R.color.red2);
 
-        binding.btnShowMoreAnalysis.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("source", "home");
-            Navigation.findNavController(v).navigate(R.id.navigation_analysis, bundle);
-        });
+                // Kwiecień
+                if (barMarchIn != null) {
+                    barMarchIn.getLayoutParams().height = incomeHeights[0];
+                    barMarchIn.setBackgroundColor(green);
+                    barMarchIn.requestLayout();
+                }
+                if (barMarchOut != null) {
+                    barMarchOut.getLayoutParams().height = outcomeHeights[0];
+                    barMarchOut.setBackgroundColor(red);
+                    barMarchOut.requestLayout();
+                }
+                // Maj
+                if (barAprilIn != null) {
+                    barAprilIn.getLayoutParams().height = incomeHeights[1];
+                    barAprilIn.setBackgroundColor(green);
+                    barAprilIn.requestLayout();
+                }
+                if (barAprilOut != null) {
+                    barAprilOut.getLayoutParams().height = outcomeHeights[1];
+                    barAprilOut.setBackgroundColor(red);
+                    barAprilOut.requestLayout();
+                }
+                // Czerwiec
+                if (barMayIn != null) {
+                    barMayIn.getLayoutParams().height = incomeHeights[2];
+                    barMayIn.setBackgroundColor(green);
+                    barMayIn.requestLayout();
+                }
+                if (barMayOut != null) {
+                    barMayOut.getLayoutParams().height = outcomeHeights[2];
+                    barMayOut.setBackgroundColor(red);
+                    barMayOut.requestLayout();
+                }
+
+                // Ustaw wartości i etykiety pod słupkami
+                if (labelMarch != null) labelMarch.setText("Kwiecień");
+                if (labelApril != null) labelApril.setText("Maj");
+                if (labelMay != null) labelMay.setText("Czerwiec");
+                if (valueMarchIn != null) valueMarchIn.setText(String.format("+%.2f", incomeVals[0]));
+                if (valueMarchOut != null) valueMarchOut.setText(String.format("-%.2f", outcomeVals[0]));
+                if (valueAprilIn != null) valueAprilIn.setText(String.format("+%.2f", incomeVals[1]));
+                if (valueAprilOut != null) valueAprilOut.setText(String.format("-%.2f", outcomeVals[1]));
+                if (valueMayIn != null) valueMayIn.setText(String.format("+%.2f", incomeVals[2]));
+                if (valueMayOut != null) valueMayOut.setText(String.format("-%.2f", outcomeVals[2]));
+
+                if (valueMarchIn != null) valueMarchIn.setTextColor(green);
+                if (valueMarchOut != null) valueMarchOut.setTextColor(red);
+                if (valueAprilIn != null) valueAprilIn.setTextColor(green);
+                if (valueAprilOut != null) valueAprilOut.setTextColor(red);
+                if (valueMayIn != null) valueMayIn.setTextColor(green);
+                if (valueMayOut != null) valueMayOut.setTextColor(red);
+
+                // Kwoty wpływów tuż nad słupkiem (leciutko powyżej)
+                int marginAboveBar = 4; // px, można zmienić na dp jeśli chcesz
+                if (valueMarchIn != null) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) valueMarchIn.getLayoutParams();
+                    params.bottomMargin = marginAboveBar;
+                    valueMarchIn.setLayoutParams(params);
+                }
+                if (valueAprilIn != null) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) valueAprilIn.getLayoutParams();
+                    params.bottomMargin = marginAboveBar;
+                    valueAprilIn.setLayoutParams(params);
+                }
+                if (valueMayIn != null) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) valueMayIn.getLayoutParams();
+                    params.bottomMargin = marginAboveBar;
+                    valueMayIn.setLayoutParams(params);
+                }
+            });
+        }).start();
     }
 }

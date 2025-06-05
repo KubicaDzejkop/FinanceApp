@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="false"
-    >
+    android:fitsSystemWindows="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,21 +19,21 @@
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/purple_500"
-            >
+            android:backgroundTint="@color/purple_500">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@color/light_violet">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dostępne środki"
                     android:textSize="18sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/purple_500"
                     android:textStyle="bold" />
 
                 <TextView
@@ -43,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:text="100,00PLN"
                     android:textSize="26sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/purple_500"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"/>
             </LinearLayout>
@@ -55,8 +54,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/circle_background"
-            android:backgroundTint="@color/purple_500"
-            >
+            android:backgroundTint="@color/purple_500">
 
             <ImageView
                 android:id="@+id/btnAddTransaction"
@@ -69,20 +67,21 @@
 
         <!-- Historia transakcji (DYNAMICZNA) -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardTransactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_violet">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:background="@color/purple_500"
-                >
+                android:background="@color/light_violet">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -97,39 +96,42 @@
                         android:text="Ostatnie transakcje"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/btnShowMoreTransactions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Więcej"
-                        android:textColor="@color/red"
+                        android:textColor="@color/black"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
+                <!-- RecyclerView z tłem light violet -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRecentTransactions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    />
+                    android:background="@color/light_violet"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Analiza finansowa -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardAnalysis"
             android:layout_width="match_parent"
-            android:layout_height="217dp"
+            android:layout_height="300dp"
             android:layout_marginBottom="32dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            android:backgroundTint="@color/light_violet">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/purple_500"
+                android:background="@color/light_violet"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -144,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Analiza finansowa"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -153,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Więcej"
-                        android:textColor="@color/red"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -162,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Moje wydatki w tym miesiącu:"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -172,79 +174,197 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="782,99pln"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!-- Przykładowy wykres słupkowy jako layout (do zamiany na wykres dynamiczny) -->
+                <!-- Paski słupków finansowych: zielony NAD czerwonym! -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="180dp"
                     android:layout_marginTop="8dp"
                     android:gravity="bottom|center_horizontal"
                     android:orientation="horizontal">
 
-                    <!-- Słupek 1 -->
+                    <!-- Kwiecień -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="bottom|center_horizontal"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/barMarch"
-                            android:layout_width="14dp"
-                            android:layout_height="100dp"
-                            android:background="@color/white" />
+                        android:orientation="vertical"
+                        android:paddingHorizontal="4dp">
 
                         <TextView
+                            android:id="@+id/valueMarchIn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Marzec"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                            android:text="+0.00"
+                            android:textColor="@color/green2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="4dp"/>
+                        <!-- Słupki: zielony nad czerwonym -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="bottom|center_horizontal">
 
-                    <!-- Słupek 2 -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:orientation="vertical">
+                            <View
+                                android:id="@+id/barMarchIn"
+                                android:layout_width="20dp"
+                                android:layout_height="60dp"
+                                android:background="@color/green2" />
 
-                        <View
-                            android:id="@+id/barApril"
-                            android:layout_width="14dp"
-                            android:layout_height="100dp"
-                            android:background="@color/white" />
-
+                            <View
+                                android:id="@+id/barMarchOut"
+                                android:layout_width="20dp"
+                                android:layout_height="40dp"
+                                android:background="@color/red2" />
+                        </LinearLayout>
                         <TextView
+                            android:id="@+id/valueMarchOut"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-0.00"
+                            android:textColor="@color/red2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"/>
+                        <TextView
+                            android:id="@+id/labelMarch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Kwiecień"
-                            android:textSize="12sp" />
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_marginBottom="20dp"
+                            />
                     </LinearLayout>
 
-                    <!-- Słupek 3 -->
+                    <!-- Maj -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="bottom|center_horizontal"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/barMay"
-                            android:layout_width="14dp"
-                            android:layout_height="100dp"
-                            android:background="@color/white" />
+                        android:orientation="vertical"
+                        android:paddingHorizontal="4dp">
 
                         <TextView
+                            android:id="@+id/valueAprilIn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+0.00"
+                            android:textColor="@color/green2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="4dp"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="bottom|center_horizontal">
+
+                            <View
+                                android:id="@+id/barAprilIn"
+                                android:layout_width="20dp"
+                                android:layout_height="60dp"
+                                android:background="@color/green2" />
+
+                            <View
+                                android:id="@+id/barAprilOut"
+                                android:layout_width="20dp"
+                                android:layout_height="40dp"
+                                android:background="@color/red2" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/valueAprilOut"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-0.00"
+                            android:textColor="@color/red2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"/>
+                        <TextView
+                            android:id="@+id/labelApril"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Maj"
-                            android:textSize="12sp" />
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_marginBottom="20dp"
+                            />
+                    </LinearLayout>
+
+                    <!-- Czerwiec -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="4dp">
+
+                        <TextView
+                            android:id="@+id/valueMayIn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+0.00"
+                            android:textColor="@color/green2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="4dp"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="bottom|center_horizontal">
+
+                            <View
+                                android:id="@+id/barMayIn"
+                                android:layout_width="20dp"
+                                android:layout_height="60dp"
+                                android:background="@color/green2" />
+
+                            <View
+                                android:id="@+id/barMayOut"
+                                android:layout_width="20dp"
+                                android:layout_height="40dp"
+                                android:background="@color/red2" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/valueMayOut"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-0.00"
+                            android:textColor="@color/red2"
+                            android:textStyle="bold"
+                            android:textSize="13sp"/>
+                        <TextView
+                            android:id="@+id/labelMay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Czerwiec"
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_marginBottom="20dp"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

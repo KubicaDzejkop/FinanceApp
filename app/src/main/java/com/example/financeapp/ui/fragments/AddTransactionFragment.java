@@ -136,7 +136,7 @@ public class AddTransactionFragment extends Fragment {
                     double amountAbs = Math.abs(finalAmount);
                     double newSpent = alreadySpent + amountAbs;
                     if (newSpent > limit.limitAmount || Math.abs(newSpent - limit.limitAmount) < 0.01) {
-                        Toast.makeText(getContext(), "Nie udało się dodać transakcji - przekroczony budżet!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Przekroczony limit dla kategorii " + category.toUpperCase() + "!!", Toast.LENGTH_LONG).show();
                     } else {
                         addTransaction(finalType, finalAmount, recipient, category);
                     }

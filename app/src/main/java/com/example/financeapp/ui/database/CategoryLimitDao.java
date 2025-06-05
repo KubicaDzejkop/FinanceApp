@@ -18,4 +18,7 @@ public interface CategoryLimitDao {
 
     @Query("SELECT * FROM categorylimit WHERE userId = :userId")
     LiveData<List<CategoryLimit>> getAllLimits(String userId);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(CategoryLimit... limits);
+
 }

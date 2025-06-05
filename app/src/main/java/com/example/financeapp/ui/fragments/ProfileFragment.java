@@ -7,42 +7,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.financeapp.R;
 import com.example.financeapp.databinding.FragmentProfileBinding;
-import com.example.financeapp.ui.ViewModels.ProfileViewModel;
+import com.example.financeapp.ui.database.AppDatabase;
+import com.example.financeapp.ui.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import androidx.navigation.Navigation;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
-    private ProfileViewModel profileViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        profileViewModel.getProfileSummary().observe(getViewLifecycleOwner(), summary -> {
-            binding.textProfile.setText(summary);
-        });
+        // Pobierz dane usera z Room na podstawie UID (z SharedPreferences)
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        String uid = prefs.getString("user_id", null);
 
+        if (uid != null) {
+            new Thread(() -> {
+                AppDatabase db = AppDatabase.getDatabase(requireContext());
+                User user = db.userDao().getUserByUid(uid);
+                String name = (user != null)
+                        ? user.getFirstName() + " " + user.getLastName()
+                        : "Brak danych";
+                requireActivity().runOnUiThread(() -> binding.textProfileName.setText(name));
+            }).start();
+        }
+
+        // Zakładki i przyciski
         binding.tabMessages.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_billReminderListFragment);
+            Navigation.findNavController(v).navigate(
+                    com.example.financeapp.R.id.action_profileFragment_to_billReminderListFragment);
         });
-
 
         binding.tabLimits.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_categoryLimitMenuFragment);
+            Navigation.findNavController(v).navigate(
+                    com.example.financeapp.R.id.action_profileFragment_to_categoryLimitMenuFragment);
         });
 
         binding.buttonAddReminder.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.addBillReminderFragment);
+            Navigation.findNavController(v).navigate(
+                    com.example.financeapp.R.id.addBillReminderFragment);
         });
-
 
         binding.buttonLogout.setOnClickListener(v -> {
             logout();
@@ -52,16 +60,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-
+        // Wylogowanie z Firebase i usunięcie UID z SharedPreferences
         FirebaseAuth.getInstance().signOut();
-
-
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         prefs.edit().remove("user_id").apply();
-
-
         Navigation.findNavController(requireView())
-                .navigate(R.id.action_profileFragment_to_loginFragment);
+                .navigate(com.example.financeapp.R.id.action_profileFragment_to_loginFragment);
     }
 
     @Override

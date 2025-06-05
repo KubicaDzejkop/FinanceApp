@@ -1,7 +1,6 @@
 package com.example.financeapp.ui.database;
 
 import androidx.lifecycle.LiveData;
-
 import com.example.financeapp.ui.models.MonthlyExpense;
 import com.example.financeapp.ui.models.Transaction;
 import java.util.List;
@@ -20,28 +19,28 @@ public class TransactionRepository {
         return transactionDao.getAllTransactions(userId);
     }
 
-    public LiveData<List<Transaction>> getAllIncomes() {
-        return transactionDao.getAllIncomes();
+    public LiveData<List<Transaction>> getAllIncomes(String userId) {
+        return transactionDao.getAllIncomes(userId);
     }
 
-    public LiveData<List<Transaction>> getAllExpenses() {
-        return transactionDao.getAllExpenses();
+    public LiveData<List<Transaction>> getAllExpenses(String userId) {
+        return transactionDao.getAllExpenses(userId);
     }
 
-    public LiveData<Double> getTotalIncomes() {
-        return transactionDao.getTotalIncomes();
+    public LiveData<Double> getTotalIncomes(String userId) {
+        return transactionDao.getTotalIncomes(userId);
     }
 
-    public LiveData<Double> getTotalExpenses() {
-        return transactionDao.getTotalExpenses();
+    public LiveData<Double> getTotalExpenses(String userId) {
+        return transactionDao.getTotalExpenses(userId);
     }
 
-    public LiveData<List<Transaction>> getTransactionsByCategory(String category) {
-        return transactionDao.getTransactionsByCategory(category);
+    public LiveData<List<Transaction>> getTransactionsByCategory(String userId, String category) {
+        return transactionDao.getTransactionsByCategory(userId, category);
     }
 
-    public LiveData<List<Transaction>> getTransactionsByMonth(String month, String year) {
-        return transactionDao.getTransactionsByMonth(month, year);
+    public LiveData<List<Transaction>> getTransactionsByMonth(String userId, String month, String year) {
+        return transactionDao.getTransactionsByMonth(userId, month, year);
     }
 
     public LiveData<Double> getBalance(String userId) {
@@ -56,8 +55,8 @@ public class TransactionRepository {
         executorService.execute(() -> transactionDao.delete(transaction));
     }
 
-    public void deleteById(int id) {
-        executorService.execute(() -> transactionDao.deleteById(id));
+    public void deleteById(int id, String userId) {
+        executorService.execute(() -> transactionDao.deleteById(id, userId));
     }
 
     public LiveData<Transaction> getTransactionById(int transactionId, String userId) {
@@ -73,7 +72,6 @@ public class TransactionRepository {
     public LiveData<List<MonthlyExpense>> getLast3MonthsExpenses(String userId, String year, String prevYear) {
         return transactionDao.getLast3MonthsExpenses(userId, year, prevYear);
     }
-
     public LiveData<Double> getTotalExpensesByCategory(String userId, String category) {
         return transactionDao.getTotalExpensesByCategory(userId, category);
     }

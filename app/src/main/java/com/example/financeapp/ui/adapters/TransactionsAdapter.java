@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.R;
@@ -19,9 +20,18 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<TransactionListItem> items = new ArrayList<>();
     private OnTransactionClickListener listener;
+    private OnBindViewHolderListener onBindViewHolderListener;
 
     public interface OnTransactionClickListener {
         void onTransactionClick(Transaction transaction);
+    }
+
+    public interface OnBindViewHolderListener {
+        void onBind(RecyclerView.ViewHolder holder, Transaction transaction);
+    }
+
+    public void setOnBindViewHolderListener(OnBindViewHolderListener onBindViewHolderListener) {
+        this.onBindViewHolderListener = onBindViewHolderListener;
     }
 
     public void setOnTransactionClickListener(OnTransactionClickListener listener) {
@@ -59,6 +69,9 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((DateHeaderViewHolder) holder).bind(item.getDate());
         } else if (item.getType() == TransactionListItem.TYPE_TRANSACTION) {
             ((TransactionViewHolder) holder).bind(item.getTransaction());
+            if (onBindViewHolderListener != null) {
+                onBindViewHolderListener.onBind(holder, item.getTransaction());
+            }
         }
     }
 
@@ -78,10 +91,10 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    static class TransactionViewHolder extends RecyclerView.ViewHolder {
-        TextView recipient, amount;
+    public static class TransactionViewHolder extends RecyclerView.ViewHolder {
+        public TextView recipient, amount;
 
-        TransactionViewHolder(@NonNull View itemView, final OnTransactionClickListener listener) {
+        public TransactionViewHolder(@NonNull View itemView, final OnTransactionClickListener listener) {
             super(itemView);
             recipient = itemView.findViewById(R.id.tvRecipient);
             amount = itemView.findViewById(R.id.tvAmount);
@@ -93,14 +106,18 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
 
-        void bind(Transaction transaction) {
+        public void bind(Transaction transaction) {
             recipient.setText(transaction.getRecipient());
             amount.setText(String.format("%.2f PLN", transaction.getAmount()));
+
+            recipient.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.black));
+
             if (transaction.getAmount() < 0) {
-                amount.setTextColor(itemView.getContext().getResources().getColor(android.R.color.holo_red_dark));
+                amount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red2));
             } else {
-                amount.setTextColor(itemView.getContext().getResources().getColor(android.R.color.holo_green_dark));
+                amount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.green2));
             }
+
             itemView.setTag(transaction);
         }
     }

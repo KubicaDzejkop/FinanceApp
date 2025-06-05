@@ -7,8 +7,13 @@ import androidx.room.PrimaryKey;
 public class CategoryLimit {
     @PrimaryKey(autoGenerate = true)
     public int id;
-
     public String userId;
     public String category;
     public double limitAmount;
+
+    public CategoryLimit(String userId, String category, double limitAmount) {
+        this.userId = userId;
+        this.category = category;
+        this.limitAmount = limitAmount;
+    }
 }

@@ -12,6 +12,10 @@
     <color name="green">#009688</color>
     <color name="yellow">#FFC107</color>
     <color name="gray">#ECEFF1</color>
-    <color name="green2">#388E3C</color>
-    <color name="red2">#D32F2F</color>
+    <color name="light_violet">#F3EAFE</color>
+    <color name="green2">#28B463</color>
+    <color name="red2">#E74C3C</color>
+    <color name="search_background_gray">#F8F8F8</color>
+    <color name="gray_search_icon">#B0B0B0</color>
+    <color name="search_hint_gray">#B0B0B0</color>
 </resources>

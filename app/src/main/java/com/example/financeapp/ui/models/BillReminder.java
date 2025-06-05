@@ -19,4 +19,13 @@ public class BillReminder {
     public long notificationTime;
 
     public BillReminder() {}
+
+    public BillReminder(String userId, String title, String message, String dueDate, boolean paid, long notificationTime) {
+        this.userId = userId;
+        this.title = title;
+        this.message = message;
+        this.dueDate = dueDate;
+        this.paid = paid;
+        this.notificationTime = notificationTime;
+    }
 }

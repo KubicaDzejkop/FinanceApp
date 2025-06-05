@@ -2,8 +2,6 @@ package com.example.financeapp.ui.ViewModels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.TransactionRepository;
 import com.example.financeapp.ui.models.MonthlyExpense;
 import com.example.financeapp.ui.models.Transaction;

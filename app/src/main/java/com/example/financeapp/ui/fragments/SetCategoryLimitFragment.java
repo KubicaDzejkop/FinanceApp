@@ -32,6 +32,8 @@ public class SetCategoryLimitFragment extends Fragment {
     private EditText etLimitAmount;
     private CategoryLimitViewModel limitViewModel;
     private String userId;
+    private CategoryLimit category;
+    private CategoryLimit amount;
 
     private final String[] categories = new String[]{
             "Rozrywka", "Rachunki", "Jedzenie", "Praca", "Transport", "Zdrowie", "Zakupy", "Inne", "Wynagrodzenie", "Zwrot", "Żywność"
@@ -77,10 +79,7 @@ public class SetCategoryLimitFragment extends Fragment {
                 return;
             }
             double amount = Double.parseDouble(amountStr.replace(",", "."));
-            CategoryLimit limit = new CategoryLimit();
-            limit.userId = userId;
-            limit.category = category;
-            limit.limitAmount = amount;
+            CategoryLimit limit = new CategoryLimit(userId, category, amount);
             limitViewModel.insertOrUpdate(limit);
             Toast.makeText(getContext(), "Limit zapisany!", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(v).popBackStack();

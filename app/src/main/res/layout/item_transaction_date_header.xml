@@ -3,15 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@color/light_violet"
     android:paddingTop="0dp"
-    android:paddingBottom="0dp">
+    android:paddingBottom="0dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    >
 
     <!-- Linia nad datą -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:layout_height="2dp"
+        android:background="@color/black"
         android:layout_marginBottom="4dp" />
 
     <!-- Data -->
@@ -22,7 +25,7 @@
         android:text="2025-05-19"
         android:textStyle="bold"
         android:textSize="13sp"
-        android:textColor="#979797"
+        android:textColor="@color/purple_500"
         android:gravity="start"
         android:paddingLeft="10dp"
         android:paddingTop="8dp"
@@ -31,7 +34,7 @@
     <!-- Linia pod datą -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:layout_height="2dp"
+        android:background="@color/black"
         android:layout_marginTop="4dp" />
 </LinearLayout>

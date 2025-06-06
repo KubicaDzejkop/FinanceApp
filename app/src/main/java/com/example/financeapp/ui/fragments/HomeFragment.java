@@ -1,12 +1,10 @@
 package com.example.financeapp.ui.fragments;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -23,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.financeapp.MainActivity;
 import com.example.financeapp.R;
 import com.example.financeapp.ui.adapters.TransactionsAdapter;
 import com.example.financeapp.ui.models.Transaction;
@@ -30,6 +29,8 @@ import com.example.financeapp.ui.models.TransactionListItem;
 import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.database.AppDatabase;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,6 @@ public class HomeFragment extends Fragment {
         valueMayIn = view.findViewById(R.id.valueMayIn);
         valueMayOut = view.findViewById(R.id.valueMayOut);
 
-        // Jasny fioletowy kolor CardView Analiza i Ostatnie transakcje
         CardView cardAnalysis = view.findViewById(R.id.cardAnalysis);
         CardView cardTransactions = view.findViewById(R.id.cardTransactions);
         int lightViolet = ContextCompat.getColor(requireContext(), R.color.light_violet);
@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment {
 
         rvRecentTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Przyciski
         btnAddTransaction.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.addTransactionFragment)
         );
@@ -96,74 +95,19 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_home_to_analysisFragment)
         );
 
-        // Zmień kolor przycisku "Więcej"
         btnShowMoreTransactions.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
         btnShowMoreAnalysis.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
         btnShowMoreTransactions.setTypeface(null, Typeface.BOLD);
         btnShowMoreAnalysis.setTypeface(null, Typeface.BOLD);
 
-        createNotificationChannel();
-
-        // Po wejściu na Home sprawdź czy istnieje nieopłacone przypomnienie i pokaż push tylko raz po uruchomieniu aplikacji
-        showUnpaidBillPushIfExists();
-
-        // === AUTOMATYCZNE PRZYPOMNIENIA O RACHUNKACH ===
-        generateBillReminders();
+        // Najpierw generuj przypomnienia, potem wysyłaj PUSH jeśli to zimny start/logowanie
+        generateBillRemindersAndShowPush();
 
         loadHomeData();
         return view;
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "bills_channel";
-            String name = "Przypomnienia o rachunkach";
-            String desc = "Powiadomienia o zbliżających się rachunkach";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-            channel.setDescription(desc);
-            NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private void sendPushNotification(String title, String message) {
-        Intent intent = new Intent(requireContext(), requireActivity().getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "bills_channel")
-                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
-    }
-
-    // Po wejściu na ekran główny, pokaż PUSH jeśli jest nieopłacone przypomnienie
-    // ALE wysyłaj tylko raz na zimny start aplikacji, nie za każdym wejściem do HomeFragment
-    private void showUnpaidBillPushIfExists() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-        String userId = prefs.getString("user_id", null);
-        boolean notified = prefs.getBoolean("bill_reminder_notified", false);
-        if (userId == null || notified) return;
-
-        new Thread(() -> {
-            AppDatabase db = AppDatabase.getDatabase(requireContext());
-            // Pobierz pierwsze nieopłacone przypomnienie
-            BillReminder reminder = db.billReminderDao().getFirstUnpaid(userId);
-            if (reminder != null) {
-                sendPushNotification(reminder.title, reminder.message);
-                prefs.edit().putBoolean("bill_reminder_notified", true).apply();
-            }
-        }).start();
-    }
-
-    private void generateBillReminders() {
+    private void generateBillRemindersAndShowPush() {
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String userId = prefs.getString("user_id", null);
         if (userId == null) return;
@@ -173,7 +117,7 @@ public class HomeFragment extends Fragment {
             List<Transaction> transactions = db.transactionDao().getTransactionsForUser(userId);
             List<BillReminder> reminders = db.billReminderDao().getAllSync(userId);
 
-            // Dla każdego odbiorcy rachunku znajdź NAJNOWSZY rachunek
+            // Generowanie przypomnień
             Map<String, Transaction> latestBills = new HashMap<>();
             for (Transaction t : transactions) {
                 if (t.getCategory() != null && t.getCategory().equalsIgnoreCase("rachunki")) {
@@ -190,7 +134,6 @@ public class HomeFragment extends Fragment {
                 java.time.LocalDate transDate = java.time.LocalDate.parse(t.getDate());
                 int paymentDay = transDate.getDayOfMonth();
 
-                // Termin płatności na ten miesiąc lub następny (jeśli już minął)
                 java.time.LocalDate billDate = today.withDayOfMonth(Math.min(paymentDay, today.lengthOfMonth()));
                 if (!billDate.isAfter(today)) {
                     java.time.LocalDate nextMonth = today.plusMonths(1);
@@ -198,7 +141,6 @@ public class HomeFragment extends Fragment {
                 }
                 java.time.LocalDate reminderDate = billDate.minusDays(2);
 
-                // SPRAWDZENIE: czy już zapłacono rachunek za ten miesiąc i odbiorcę
                 String billYearMonth = billDate.toString().substring(0, 7);
                 boolean alreadyPaid = false;
                 for (Transaction t2 : transactions) {
@@ -211,7 +153,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                // Tylko jeśli dziś >= reminderDate i NIE istnieje przypomnienie i NIE zapłacono
                 boolean alreadyExists = false;
                 for (BillReminder br : reminders) {
                     if (br.title.equalsIgnoreCase(t.getRecipient())
@@ -230,7 +171,16 @@ public class HomeFragment extends Fragment {
                     newReminder.notificationTime = java.time.ZonedDateTime.now().toInstant().toEpochMilli();
                     newReminder.amount = t.getAmount();
                     db.billReminderDao().insert(newReminder);
-                    // NIE wysyłaj tu ponownie powiadomienia!
+                }
+            }
+
+            // Teraz sprawdź i wyślij push TYLKO jeśli bill_reminder_notified == false (czyli po logowaniu/zimnym starcie)
+            boolean notified = prefs.getBoolean("bill_reminder_notified", false);
+            if (!notified) {
+                BillReminder reminder = db.billReminderDao().getFirstUnpaid(userId);
+                if (reminder != null) {
+                    sendPushNotification(reminder.title, reminder.message);
+                    prefs.edit().putBoolean("bill_reminder_notified", true).apply();
                 }
             }
         }).start();
@@ -261,6 +211,12 @@ public class HomeFragment extends Fragment {
             AppDatabase db = AppDatabase.getDatabase(requireContext());
             List<Transaction> transactions = db.transactionDao().getTransactionsForUser(uid);
 
+            Collections.sort(transactions, (t1, t2) -> {
+                int dateCmp = t2.getDate().compareTo(t1.getDate());
+                if (dateCmp != 0) return dateCmp;
+                return Integer.compare(t2.getId(), t1.getId());
+            });
+
             double saldo = 0;
             double monthlySpending = 0;
             String currentMonth = "2025-06";
@@ -272,13 +228,14 @@ public class HomeFragment extends Fragment {
             }
             final double saldoFinal = saldo;
             final double monthlySpendingFinal = monthlySpending;
-            final List<Transaction> lastTransactions = transactions.size() > 5 ? transactions.subList(0, 5) : transactions;
+
+            final List<Transaction> lastTransactions = transactions.size() > 5 ? transactions.subList(0, 5) : new ArrayList<>(transactions);
+
             final List<TransactionListItem> items = new ArrayList<>();
             for (Transaction t : lastTransactions) {
                 items.add(TransactionListItem.transactionItem(t));
             }
 
-            // Dane do wykresu - przychody i wydatki osobno
             String[] months = new String[]{"Kwi", "Maj", "Cze"};
             Map<String, Float> incomesPerMonth = new HashMap<>();
             Map<String, Float> outcomesPerMonth = new HashMap<>();
@@ -331,7 +288,6 @@ public class HomeFragment extends Fragment {
                 int green = ContextCompat.getColor(requireContext(), R.color.green2);
                 int red = ContextCompat.getColor(requireContext(), R.color.red2);
 
-                // Kwiecień
                 if (barMarchIn != null) {
                     barMarchIn.getLayoutParams().height = incomeHeights[0];
                     barMarchIn.setBackgroundColor(green);
@@ -342,7 +298,6 @@ public class HomeFragment extends Fragment {
                     barMarchOut.setBackgroundColor(red);
                     barMarchOut.requestLayout();
                 }
-                // Maj
                 if (barAprilIn != null) {
                     barAprilIn.getLayoutParams().height = incomeHeights[1];
                     barAprilIn.setBackgroundColor(green);
@@ -353,7 +308,6 @@ public class HomeFragment extends Fragment {
                     barAprilOut.setBackgroundColor(red);
                     barAprilOut.requestLayout();
                 }
-                // Czerwiec
                 if (barMayIn != null) {
                     barMayIn.getLayoutParams().height = incomeHeights[2];
                     barMayIn.setBackgroundColor(green);
@@ -365,7 +319,6 @@ public class HomeFragment extends Fragment {
                     barMayOut.requestLayout();
                 }
 
-                // Ustaw wartości i etykiety pod słupkami
                 if (labelMarch != null) labelMarch.setText("Kwiecień");
                 if (labelApril != null) labelApril.setText("Maj");
                 if (labelMay != null) labelMay.setText("Czerwiec");
@@ -383,7 +336,6 @@ public class HomeFragment extends Fragment {
                 if (valueMayIn != null) valueMayIn.setTextColor(green);
                 if (valueMayOut != null) valueMayOut.setTextColor(red);
 
-                // Kwoty wpływów tuż nad słupkiem (leciutko powyżej)
                 int marginAboveBar = 4; // px, można zmienić na dp jeśli chcesz
                 if (valueMarchIn != null) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) valueMarchIn.getLayoutParams();
@@ -402,5 +354,24 @@ public class HomeFragment extends Fragment {
                 }
             });
         }).start();
+    }
+
+    private void sendPushNotification(String title, String message) {
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "bills_channel")
+                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        }
     }
 }

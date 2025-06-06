@@ -14,7 +14,6 @@ import com.example.financeapp.ui.ViewModels.BillReminderViewModel;
 import com.example.financeapp.ui.ViewModels.BillReminderViewModelFactory;
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.BillReminderRepository;
-import com.example.financeapp.ui.models.BillReminder;
 
 public class BillReminderDetailFragment extends Fragment {
     private static final String ARG_REMINDER_ID = "reminderId";
@@ -44,6 +43,7 @@ public class BillReminderDetailFragment extends Fragment {
         TextView tvDue = view.findViewById(R.id.tvDetailDue);
         TextView tvStatus = view.findViewById(R.id.tvDetailStatus);
         TextView tvMessage = view.findViewById(R.id.tvDetailMessage);
+        TextView tvAmount = view.findViewById(R.id.tvDetailAmount);
         Button btnPaid = view.findViewById(R.id.btnMarkPaid);
 
         viewModel.getById(reminderId).observe(getViewLifecycleOwner(), reminder -> {
@@ -52,6 +52,9 @@ public class BillReminderDetailFragment extends Fragment {
             tvDue.setText(reminder.dueDate);
             tvStatus.setText(reminder.paid ? "Opłacony" : "Nieopłacony");
             tvMessage.setText(reminder.message);
+
+            tvAmount.setText("Kwota: " + String.format("%.2f PLN", Math.abs(reminder.amount)));
+
             btnPaid.setVisibility(reminder.paid ? View.GONE : View.VISIBLE);
 
             btnPaid.setOnClickListener(v -> {

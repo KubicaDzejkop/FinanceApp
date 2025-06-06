@@ -63,13 +63,16 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
         boolean expanded = expandedPositions.contains(position);
         holder.layoutExpandable.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-
         holder.textDueDate.setText("Data: " + (reminder.dueDate != null ? reminder.dueDate : "Brak terminu"));
         holder.textDueDate.setTextColor(Color.parseColor("#222222")); // czarny
-        holder.textStatus.setText("Status: " + (reminder.paid ? "Opłacone" : "Nieopłacony"));
-        holder.textStatus.setTextColor(Color.parseColor("#D32F2F")); // czerwony
-        holder.textDescription.setText("Opis: " + (reminder.message != null ? reminder.message : ""));
 
+        // KWOTA - NOWE
+        holder.textAmount.setText("Kwota: " + String.format("%.2f PLN", reminder.amount));
+        holder.textAmount.setTextColor(Color.parseColor("#222222"));
+
+        holder.textStatus.setText("Status: " + (reminder.paid ? "Opłacone" : "Nieopłacony"));
+        holder.textStatus.setTextColor(reminder.paid ? Color.parseColor("#388E3C") : Color.parseColor("#D32F2F"));
+        holder.textDescription.setText("Opis: " + (reminder.message != null ? reminder.message : ""));
 
         holder.btnPaid.setVisibility(reminder.paid ? View.GONE : View.VISIBLE);
         holder.btnDelete.setVisibility(reminder.paid ? View.VISIBLE : View.GONE);
@@ -101,7 +104,7 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textTitle, textDueDate, textStatus, textDescription;
+        TextView textTitle, textDueDate, textAmount, textStatus, textDescription;
         LinearLayout layoutExpandable;
         Button btnPaid, btnDelete;
 
@@ -109,6 +112,7 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
             super(v);
             textTitle = v.findViewById(R.id.text_title);
             textDueDate = v.findViewById(R.id.text_due_date);
+            textAmount = v.findViewById(R.id.text_amount); // NOWE
             textStatus = v.findViewById(R.id.text_status);
             textDescription = v.findViewById(R.id.text_description);
             layoutExpandable = v.findViewById(R.id.layout_expandable);

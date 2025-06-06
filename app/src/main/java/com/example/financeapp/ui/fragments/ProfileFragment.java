@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.financeapp.databinding.FragmentProfileBinding;
 import com.example.financeapp.ui.database.AppDatabase;
+import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import androidx.navigation.Navigation;
@@ -34,6 +36,25 @@ public class ProfileFragment extends Fragment {
                         : "Brak danych";
                 requireActivity().runOnUiThread(() -> binding.textProfileName.setText(name));
             }).start();
+
+            // BADGE: policz ile jest nieprzeczytanych wiadomości (tu: nieopłaconych przypomnień)
+            new Thread(() -> {
+                AppDatabase db = AppDatabase.getDatabase(requireContext());
+                // Pobierz liczbę nieopłaconych przypomnień (np. jako liczbę wiadomości)
+                int unreadCount = db.billReminderDao().countUnpaid(uid);
+                requireActivity().runOnUiThread(() -> {
+                    TextView badge = binding.badgeMessages;
+                    if (unreadCount > 0) {
+                        badge.setText(String.valueOf(unreadCount));
+                        badge.setVisibility(View.VISIBLE);
+                    } else {
+                        badge.setVisibility(View.GONE);
+                    }
+                });
+            }).start();
+        } else {
+            // Jeśli nie zalogowany, nie pokazuj badge
+            binding.badgeMessages.setVisibility(View.GONE);
         }
 
         // Zakładki i przyciski

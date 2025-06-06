@@ -36,7 +36,7 @@ public class SetCategoryLimitFragment extends Fragment {
     private CategoryLimit amount;
 
     private final String[] categories = new String[]{
-            "Rozrywka", "Rachunki", "Jedzenie", "Praca", "Transport", "Zdrowie", "Zakupy", "Inne", "Wynagrodzenie", "Zwrot", "Żywność"
+            "Rozrywka", "Transport", "Zdrowie", "Zakupy" , "Żywność", "Rachunki", "Inne"
     };
 
     @Nullable

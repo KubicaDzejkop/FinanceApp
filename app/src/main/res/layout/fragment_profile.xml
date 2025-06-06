@@ -48,20 +48,41 @@
             android:divider="@android:color/black"
             android:showDividers="middle">
 
-            <TextView
-                android:id="@+id/tab_messages"
+            <!-- "Wiadomości" z badge, tekst wycentrowany! -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="Wiadomości"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="20sp"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground" />
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/tab_messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Wiadomości"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- BadgeView (kółko), domyślnie GONE, po prawej i wyśrodkowane w pionie -->
+                <TextView
+                    android:id="@+id/badge_messages"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="32dp"
+                    android:gravity="center"
+                    android:background="@drawable/badge_circle_red"
+                    android:textColor="@android:color/white"
+                    android:text="2"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/button_add_reminder"

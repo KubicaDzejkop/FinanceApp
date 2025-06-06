@@ -8,11 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.financeapp.MainActivity;
 import com.example.financeapp.R;
 import com.example.financeapp.databinding.FragmentLoginPanelBinding;
 import com.example.financeapp.ui.database.AppDatabase;
@@ -42,7 +47,6 @@ public class LoginFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Pokaż/ukryj hasło
         binding.imageViewShowPassword.setOnClickListener(v -> {
             if (!isPasswordVisible) {
                 binding.editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -72,7 +76,9 @@ public class LoginFragment extends Fragment {
                             if (user != null) {
                                 String uid = user.getUid();
                                 SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-                                prefs.edit().putString("user_id", uid).apply();
+                                prefs.edit().putString("user_id", uid)
+                                        .putBoolean("bill_reminder_notified", false)
+                                        .apply();
                             }
                             Toast.makeText(getContext(), "Zalogowano!", Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
@@ -106,6 +112,7 @@ public class LoginFragment extends Fragment {
                                 prefs.edit().putString("user_id", uid)
                                         .putString("first_name", firstName)
                                         .putString("last_name", lastName)
+                                        .putBoolean("bill_reminder_notified", false)
                                         .apply();
 
                                 // Dodaj przykładowe dane do Room – dla KAŻDEGO nowego konta!
@@ -119,7 +126,6 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Circle K", -90.00, "Transport", "2025-03-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Netflix", -29.00, "Rozrywka", "2025-03-06", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Przelew od rodziny", 500.00, "Prezent", "2025-03-09", "income"));
-                                    // Energa z nową datą!
                                     db.transactionDao().insert(new Transaction(uid, "Energa", -180.50, "Rachunki", "2025-05-08", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "H&M", -120.00, "Zakupy", "2025-03-17", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Starbucks", -25.40, "Jedzenie", "2025-03-22", "expense"));
@@ -153,10 +159,14 @@ public class LoginFragment extends Fragment {
                                     // Przykładowe limity kategorii
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Zakupy", 600.0));
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Rozrywka", 200.0));
-                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Transport", 300.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Transport", 400.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Rachunki", 1000.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Jedzenie", 400.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Zdrowie", 300.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Inne", 400.0));
+                                    db.categoryLimitDao().insert(new CategoryLimit(uid, "Żywność", 400.0));
 
-                                    // Przykładowe przypomnienie o rachunku (dla testów)
-                                    new BillReminder(uid, "Rachunek za prąd", "Opłać rachunek za prąd do końca miesiąca", "2025-06-25", false, System.currentTimeMillis() + 60_000, 0.0);                             }).start();
+                                }).start();
                             }
                             Toast.makeText(getContext(), "Zarejestrowano i zalogowano!", Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);

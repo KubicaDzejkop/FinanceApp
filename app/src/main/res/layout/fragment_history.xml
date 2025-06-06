@@ -9,7 +9,6 @@
     android:padding="16dp"
     android:fitsSystemWindows="false">
 
-    <!-- Header row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +40,6 @@
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- Search bar styled as per Image 2 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="46dp"
@@ -81,7 +79,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
 
-    <!-- RecyclerView na transakcje -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTransactions"
         android:layout_width="match_parent"

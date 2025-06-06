@@ -40,12 +40,10 @@ public class HomeFragment extends Fragment {
     private ImageView btnAddTransaction;
     private TextView btnShowMoreTransactions, btnShowMoreAnalysis;
 
-    // Słupki wykresu i kwoty
     private View barMarchIn, barMarchOut, barAprilIn, barAprilOut, barMayIn, barMayOut;
     private TextView labelMarch, labelApril, labelMay;
     private TextView valueMarchIn, valueMarchOut, valueAprilIn, valueAprilOut, valueMayIn, valueMayOut;
 
-    // Loading overlay (jeśli używasz)
     private View loadingOverlay;
 
     @Nullable
@@ -60,7 +58,6 @@ public class HomeFragment extends Fragment {
         btnShowMoreTransactions = view.findViewById(R.id.btnShowMoreTransactions);
         btnShowMoreAnalysis = view.findViewById(R.id.btnShowMoreAnalysis);
 
-        // Słupki i kwoty (IN/OUT osobno!)
         barMarchIn = view.findViewById(R.id.barMarchIn);
         barMarchOut = view.findViewById(R.id.barMarchOut);
         barAprilIn = view.findViewById(R.id.barAprilIn);
@@ -118,7 +115,6 @@ public class HomeFragment extends Fragment {
             List<Transaction> transactions = db.transactionDao().getTransactionsForUser(userId);
             List<BillReminder> reminders = db.billReminderDao().getAllSync(userId);
 
-            // Generowanie przypomnień
             Map<String, Transaction> latestBills = new HashMap<>();
             for (Transaction t : transactions) {
                 if (t.getCategory() != null && t.getCategory().equalsIgnoreCase("rachunki")) {
@@ -175,7 +171,6 @@ public class HomeFragment extends Fragment {
                 }
             }
 
-            // WYSYŁANIE POWIADOMIEŃ DLA WSZYSTKICH NIEOPŁACONYCH
             boolean notified = prefs.getBoolean("bill_reminder_notified", false);
             if (!notified) {
                 List<BillReminder> unpaidReminders = db.billReminderDao().getAllUnpaid(userId);
@@ -342,7 +337,7 @@ public class HomeFragment extends Fragment {
                 if (valueMayIn != null) valueMayIn.setTextColor(green);
                 if (valueMayOut != null) valueMayOut.setTextColor(red);
 
-                int marginAboveBar = 4; // px, można zmienić na dp jeśli chcesz
+                int marginAboveBar = 4;
                 if (valueMarchIn != null) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) valueMarchIn.getLayoutParams();
                     params.bottomMargin = marginAboveBar;

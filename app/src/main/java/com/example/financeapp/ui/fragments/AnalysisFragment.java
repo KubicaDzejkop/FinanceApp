@@ -35,7 +35,6 @@ public class AnalysisFragment extends Fragment {
     private BarChart barChart;
     private TextView textAvgSpending, textTotalIncomes, textTotalOutcomes;
     private String userId;
-    // Pokazujemy Mar, Kwi, Maj, Cze
     private final String[] months = new String[]{"Mar", "Kwi", "Maj", "Cze"};
 
     @Nullable
@@ -93,7 +92,6 @@ public class AnalysisFragment extends Fragment {
                 }
             }
 
-            // Średnia miesięczna wydatków ze wszystkich miesięcy
             int nonZeroMonths = 0;
             float outcomeSumForAvg = 0f;
             for (String m : months) {
@@ -107,7 +105,6 @@ public class AnalysisFragment extends Fragment {
 
             DecimalFormat df = new DecimalFormat("#,##0.00");
 
-            // STACKED BAR: czerwony (wydatki) na dole, zielony (wpływy) nad czerwonym
             List<BarEntry> entriesStacked = new ArrayList<>();
             for (int i = 0; i < months.length; i++) {
                 float outcome = outcomesPerMonth.getOrDefault(months[i], 0f);
@@ -117,8 +114,8 @@ public class AnalysisFragment extends Fragment {
 
             BarDataSet setStacked = new BarDataSet(entriesStacked, "");
             setStacked.setColors(
-                    getResources().getColor(R.color.red2, null),   // Wydatki na dole
-                    getResources().getColor(R.color.green2, null)  // Wpływy na górze
+                    getResources().getColor(R.color.red2, null),
+                    getResources().getColor(R.color.green2, null)
             );
             setStacked.setStackLabels(new String[]{"Wydatki", "Wpływy"});
             setStacked.setValueTextColor(Color.BLACK);

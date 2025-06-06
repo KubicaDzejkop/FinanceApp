@@ -51,7 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <!-- NOWY EditText do kwoty -->
         <EditText
             android:id="@+id/etAmount"
             android:hint="Kwota do zapłaty (np. 120.50)"

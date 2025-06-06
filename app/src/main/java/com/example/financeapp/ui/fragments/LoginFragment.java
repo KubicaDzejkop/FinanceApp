@@ -59,7 +59,6 @@ public class LoginFragment extends Fragment {
             isPasswordVisible = !isPasswordVisible;
         });
 
-        // LOGIN
         binding.buttonLogin.setOnClickListener(v -> {
             String email = binding.editTextUsername.getText().toString().trim();
             String password = binding.editTextPassword.getText().toString();
@@ -88,7 +87,7 @@ public class LoginFragment extends Fragment {
                     });
         });
 
-        // REJESTRACJA
+
         binding.buttonRegister.setOnClickListener(v -> {
             String email = binding.editTextUsername.getText().toString().trim();
             String password = binding.editTextPassword.getText().toString();
@@ -115,13 +114,13 @@ public class LoginFragment extends Fragment {
                                         .putBoolean("bill_reminder_notified", false)
                                         .apply();
 
-                                // Dodaj przykładowe dane do Room – dla KAŻDEGO nowego konta!
+
                                 new Thread(() -> {
                                     AppDatabase db = AppDatabase.getDatabase(requireContext());
                                     User profile = new User(uid, email, firstName, lastName);
                                     db.userDao().insert(profile);
 
-                                    // MARZEC 2025
+
                                     db.transactionDao().insert(new Transaction(uid, "Freshmarket", -45.25, "Zakupy", "2025-03-02", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Circle K", -90.00, "Transport", "2025-03-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Netflix", -29.00, "Rozrywka", "2025-03-06", "expense"));
@@ -129,7 +128,7 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "H&M", -120.00, "Zakupy", "2025-03-17", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Starbucks", -25.40, "Jedzenie", "2025-03-22", "expense"));
 
-                                    // KWIECIEŃ 2025
+
                                     db.transactionDao().insert(new Transaction(uid, "Żabka", -53.25, "Zakupy", "2025-04-03", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Shell", -120.00, "Transport", "2025-04-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Spotify", -19.99, "Rozrywka", "2025-04-07", "expense"));
@@ -138,7 +137,7 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "CCC", -89.00, "Zakupy", "2025-04-18", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Cinema City", -44.00, "Rozrywka", "2025-04-19", "expense"));
 
-                                    // MAJ 2025
+
                                     db.transactionDao().insert(new Transaction(uid, "Carrefour", -99.90, "Zakupy", "2025-05-02", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Uber", -37.50, "Transport", "2025-05-03", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Vinted", 250.00, "Sprzedaż", "2025-05-06", "income"));
@@ -151,7 +150,7 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Śmieci", -100.00, "Rachunki", "2025-05-27", "expense"));
 
 
-                                    // CZERWIEC 2025 (1-5 czerwca, 7 transakcji)
+
                                     db.transactionDao().insert(new Transaction(uid, "Auchan", -140.00, "Zakupy", "2025-06-01", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Rossmann", -70.00, "Drogeria", "2025-06-01", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "PKP TLK", -60.00, "Transport", "2025-06-02", "expense"));
@@ -159,7 +158,7 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Empik", -105.00, "Książki", "2025-06-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Kebab King", -52.40, "Jedzenie", "2025-06-05", "expense"));
 
-                                    // Przykładowe limity kategorii
+
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Zakupy", 600.0));
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Rozrywka", 200.0));
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Transport", 400.0));

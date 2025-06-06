@@ -6,7 +6,6 @@
     android:fitsSystemWindows="false"
     >
 
-    <!-- Góra: avatar + pionowa kreska + nazwa aplikacji -->
     <LinearLayout
         android:id="@+id/header_layout"
         android:layout_width="wrap_content"
@@ -18,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Avatar (kółko) -->
         <ImageView
             android:id="@+id/image_avatar"
             android:layout_width="200dp"
@@ -34,7 +32,6 @@
             android:outlineProvider="background"
             android:clipToOutline="true" />
 
-        <!-- Pionowa kreska -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

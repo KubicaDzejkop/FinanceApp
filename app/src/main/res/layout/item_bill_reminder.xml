@@ -42,7 +42,6 @@
             android:textSize="15sp"
             android:paddingBottom="2dp" />
 
-        <!-- NOWY TextView na kwotę -->
         <TextView
             android:id="@+id/text_amount"
             android:layout_width="match_parent"

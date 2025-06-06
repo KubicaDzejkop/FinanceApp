@@ -48,7 +48,6 @@ public class RateAppFragment extends Fragment {
                 return;
             }
 
-            // Schowaj elementy i pokaż GIF
             ratingBar.setVisibility(View.GONE);
             btnSubmit.setVisibility(View.GONE);
             questionText.setVisibility(View.GONE);

@@ -49,7 +49,7 @@ public class TransactionDetailsFragment extends Fragment {
         categoryChangeBtn = view.findViewById(R.id.text_category_change);
         spinnerCategories = view.findViewById(R.id.spinner_categories);
 
-        // Poprawka: użyj ImageView jeśli w layout masz <ImageView ... id="button_back" ...>
+
         ImageView backButton = view.findViewById(R.id.button_back);
         backButton.setOnClickListener(v -> Navigation.findNavController(view).popBackStack());
 

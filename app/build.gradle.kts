@@ -61,7 +61,6 @@ dependencies {
     annotationProcessor ("androidx.room:room-compiler:2.6.0")
     implementation ("androidx.room:room-ktx:2.6.0")
 
-    // Lifecycle components
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.6.2")
     implementation ("com.github.PhilJay:MPAndroidChart:3.1.0")
@@ -74,10 +73,4 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
 
-
-//    implementation ("androidx.room:room-runtime:2.4.0")
-//    annotationProcessor ("androidx.room:room-compiler:2.4.0")
-
-//    implementation ("com.facebook.stetho:stetho:1.6.0")
-//    implementation ("com.facebook.stetho:stetho-sqlite:1.6.0")
 }

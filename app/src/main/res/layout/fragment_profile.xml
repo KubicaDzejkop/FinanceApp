@@ -47,7 +47,6 @@
             android:divider="@android:color/black"
             android:showDividers="middle">
 
-            <!-- "Wiadomości" z badge, tekst wycentrowany! -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -67,7 +66,6 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <!-- BadgeView (kółko), domyślnie GONE, po prawej i wyśrodkowane w pionie -->
                 <TextView
                     android:id="@+id/badge_messages"
                     android:layout_width="28dp"

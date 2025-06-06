@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class User {
     @PrimaryKey
     @NonNull
-    private String uid; // UID z Firebase
+    private String uid;
 
     private String email;
     private String firstName;

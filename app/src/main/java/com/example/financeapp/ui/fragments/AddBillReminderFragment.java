@@ -37,7 +37,7 @@ public class AddBillReminderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         EditText etTitle = view.findViewById(R.id.etTitle);
         EditText etMessage = view.findViewById(R.id.etMessage);
-        EditText etAmount = view.findViewById(R.id.etAmount); // NOWY EditText
+        EditText etAmount = view.findViewById(R.id.etAmount);
         EditText etDueDate = view.findViewById(R.id.etDueDate);
         Button btnSave = view.findViewById(R.id.btnSaveReminder);
         ImageView btnBack = view.findViewById(R.id.btn_back_reminder);

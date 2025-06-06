@@ -7,7 +7,6 @@
     android:background="@android:color/white"
     android:fitsSystemWindows="false">
 
-    <!-- Logo -->
     <ImageView
         android:id="@+id/image_app_logo"
         android:layout_width="120dp"
@@ -21,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Nazwa aplikacji -->
     <TextView
         android:id="@+id/text_app_name"
         android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Nazwa użytkownika -->
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="0dp"
@@ -51,7 +48,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.75"/>
 
-    <!-- Kontener hasła z okiem -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/password_container"
         android:layout_width="0dp"
@@ -62,7 +58,6 @@
         android:layout_marginTop="16dp"
         app:layout_constraintWidth_percent="0.75">
 
-        <!-- Hasło -->
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="0dp"
@@ -79,7 +74,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- Ikonka oka -->
         <ImageView
             android:id="@+id/imageViewShowPassword"
             android:layout_width="32dp"
@@ -94,7 +88,6 @@
             app:layout_constraintBottom_toBottomOf="@id/editTextPassword"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Przycisk logowania -->
     <Button
         android:id="@+id/button_login"
         android:layout_width="0dp"
@@ -109,7 +102,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.75"/>
 
-    <!-- Przycisk rejestracji -->
     <Button
         android:id="@+id/button_register"
         android:layout_width="0dp"

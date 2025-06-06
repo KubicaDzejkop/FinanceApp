@@ -7,8 +7,8 @@ public class TransactionListItem {
     public static final int TYPE_TRANSACTION = 1;
 
     private int type;
-    private String date; // dla nagłówka
-    private Transaction transaction; // dla transakcji
+    private String date;
+    private Transaction transaction;
 
 
     public static TransactionListItem dateHeader(String date) {

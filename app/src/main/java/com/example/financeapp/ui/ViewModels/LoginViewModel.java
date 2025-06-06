@@ -15,7 +15,7 @@ public class LoginViewModel extends AndroidViewModel {
         super(application);
     }
 
-    // Zwraca UID aktualnie zalogowanego użytkownika (jeśli jest)
+
     public LiveData<String> getUserUid() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

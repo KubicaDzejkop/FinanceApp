@@ -11,8 +11,8 @@ public class Transaction {
     private String recipient;
     private double amount;
     private String category;
-    private String date; // Format: YYYY-MM-DD
-    private String type; // "income" lub "expense"
+    private String date;
+    private String type;
     public boolean paid;
 
 

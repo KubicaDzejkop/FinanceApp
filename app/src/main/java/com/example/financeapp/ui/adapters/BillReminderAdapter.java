@@ -64,9 +64,8 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
         holder.layoutExpandable.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
         holder.textDueDate.setText("Data: " + (reminder.dueDate != null ? reminder.dueDate : "Brak terminu"));
-        holder.textDueDate.setTextColor(Color.parseColor("#222222")); // czarny
+        holder.textDueDate.setTextColor(Color.parseColor("#222222"));
 
-        // KWOTA - NOWE
         holder.textAmount.setText("Kwota: " + String.format("%.2f PLN", reminder.amount));
         holder.textAmount.setTextColor(Color.parseColor("#222222"));
 
@@ -86,7 +85,6 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
         holder.btnPaid.setOnClickListener(v -> {
             if (!reminder.paid && paidClickListener != null) {
                 paidClickListener.onPaidClicked(reminder);
-                // Po oznaczeniu jako opłacony odśwież widok
                 notifyItemChanged(position);
             }
         });
@@ -112,7 +110,7 @@ public class BillReminderAdapter extends RecyclerView.Adapter<BillReminderAdapte
             super(v);
             textTitle = v.findViewById(R.id.text_title);
             textDueDate = v.findViewById(R.id.text_due_date);
-            textAmount = v.findViewById(R.id.text_amount); // NOWE
+            textAmount = v.findViewById(R.id.text_amount);
             textStatus = v.findViewById(R.id.text_status);
             textDescription = v.findViewById(R.id.text_description);
             layoutExpandable = v.findViewById(R.id.layout_expandable);

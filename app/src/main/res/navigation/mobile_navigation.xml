@@ -53,7 +53,6 @@
         <action
             android:id="@+id/action_profileFragment_to_billReminderListFragment"
             app:destination="@id/billReminderListFragment"/>
-        <!-- Dodajemy akcję do RateAppFragment -->
         <action
             android:id="@+id/action_profileFragment_to_rateAppFragment"
             app:destination="@id/rateAppFragment"/>
@@ -143,7 +142,6 @@
         android:label="Dodaj przypomnienie"
         tools:layout="@layout/fragment_add_bill_reminder"/>
 
-    <!-- Dodany fragment oceniania aplikacji -->
     <fragment
         android:id="@+id/rateAppFragment"
         android:name="com.example.financeapp.ui.fragments.RateAppFragment"

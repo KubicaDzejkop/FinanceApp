@@ -23,7 +23,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        // Pobierz dane usera z Room na podstawie UID (z SharedPreferences)
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String uid = prefs.getString("user_id", null);
 
@@ -37,7 +36,7 @@ public class ProfileFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> binding.textProfileName.setText(name));
             }).start();
 
-            // BADGE: policz ile jest nieprzeczytanych wiadomości (nieopłaconych przypomnień)
+
             new Thread(() -> {
                 AppDatabase db = AppDatabase.getDatabase(requireContext());
                 int unreadCount = db.billReminderDao().countUnpaid(uid);
@@ -52,34 +51,34 @@ public class ProfileFragment extends Fragment {
                 });
             }).start();
         } else {
-            // Jeśli nie zalogowany, nie pokazuj badge
+
             binding.badgeMessages.setVisibility(View.GONE);
         }
 
-        // Zakładka "Wiadomości"
+
         binding.tabMessages.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.action_profileFragment_to_billReminderListFragment);
         });
 
-        // Zakładka "Limity"
+
         binding.tabLimits.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.action_profileFragment_to_categoryLimitMenuFragment);
         });
 
-        // Przycisk "Dodaj przypomnienie"
+
         binding.buttonAddReminder.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.addBillReminderFragment);
         });
 
-        // Przycisk "Wyloguj się"
+
         binding.buttonLogout.setOnClickListener(v -> {
             logout();
         });
 
-        // Zakładka/Opcja "Oceń aplikacje"
+
         binding.tabRate.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.action_profileFragment_to_rateAppFragment);
@@ -89,7 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-        // Wylogowanie z Firebase i usunięcie UID z SharedPreferences
+
         FirebaseAuth.getInstance().signOut();
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         prefs.edit().remove("user_id").apply();

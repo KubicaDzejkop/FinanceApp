@@ -12,13 +12,13 @@ public class BillReminder {
     public String userId;
     public String title;
     public String message;
-    public String dueDate; // format: yyyy-MM-dd
+    public String dueDate;
     public boolean paid;
 
     @ColumnInfo(name = "notification_time")
     public long notificationTime;
 
-    // DODAJ KWOTĘ!
+
     public double amount;
 
     public BillReminder() {}

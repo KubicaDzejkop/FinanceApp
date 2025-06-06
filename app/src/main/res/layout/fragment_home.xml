@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Dostępne środki -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -48,7 +47,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Przycisk Dodaj transakcję (kółko) -->
         <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
@@ -65,7 +63,6 @@
                 app:tint="@color/white"/>
         </FrameLayout>
 
-        <!-- Historia transakcji (DYNAMICZNA) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardTransactions"
             android:layout_width="match_parent"
@@ -107,7 +104,6 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-                <!-- RecyclerView z tłem light violet -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRecentTransactions"
                     android:layout_width="match_parent"
@@ -118,7 +114,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Analiza finansowa -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardAnalysis"
             android:layout_width="match_parent"
@@ -178,7 +173,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!-- Paski słupków finansowych: zielony NAD czerwonym! -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
@@ -186,7 +180,6 @@
                     android:gravity="bottom|center_horizontal"
                     android:orientation="horizontal">
 
-                    <!-- Kwiecień -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -204,7 +197,6 @@
                             android:textStyle="bold"
                             android:textSize="13sp"
                             android:layout_marginBottom="4dp"/>
-                        <!-- Słupki: zielony nad czerwonym -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -247,7 +239,6 @@
                             />
                     </LinearLayout>
 
-                    <!-- Maj -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -307,7 +298,7 @@
                             />
                     </LinearLayout>
 
-                    <!-- Czerwiec -->
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

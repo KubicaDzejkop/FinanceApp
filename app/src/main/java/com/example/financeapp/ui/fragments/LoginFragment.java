@@ -126,7 +126,6 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Circle K", -90.00, "Transport", "2025-03-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Netflix", -29.00, "Rozrywka", "2025-03-06", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Przelew od rodziny", 500.00, "Prezent", "2025-03-09", "income"));
-                                    db.transactionDao().insert(new Transaction(uid, "Energa", -180.50, "Rachunki", "2025-05-08", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "H&M", -120.00, "Zakupy", "2025-03-17", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Starbucks", -25.40, "Jedzenie", "2025-03-22", "expense"));
 
@@ -145,8 +144,12 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Vinted", 250.00, "Sprzedaż", "2025-05-06", "income"));
                                     db.transactionDao().insert(new Transaction(uid, "Bonus", 400.00, "Premia", "2025-05-09", "income"));
                                     db.transactionDao().insert(new Transaction(uid, "MediaMarkt", -699.00, "Elektronika", "2025-05-11", "expense"));
+                                    db.transactionDao().insert(new Transaction(uid, "Energa", -180.50, "Rachunki", "2025-05-12", "expense"));
+                                    db.transactionDao().insert(new Transaction(uid, "Prąd", -200.50, "Rachunki", "2025-05-13", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Play", -60.00, "Telefon", "2025-05-17", "expense"));
-                                    db.transactionDao().insert(new Transaction(uid, "Pizza Hut", -120.00, "Jedzenie", "2025-05-21", "expense"));
+                                    db.transactionDao().insert(new Transaction(uid, "Pizza Hut", -120.00, "Jedzenie", "2025-05-21", "expense"));                                    db.transactionDao().insert(new Transaction(uid, "Energa2", -200.50, "Rachunki", "2025-05-11", "expense"));
+                                    db.transactionDao().insert(new Transaction(uid, "Śmieci", -100.00, "Rachunki", "2025-05-27", "expense"));
+
 
                                     // CZERWIEC 2025 (1-5 czerwca, 7 transakcji)
                                     db.transactionDao().insert(new Transaction(uid, "Auchan", -140.00, "Zakupy", "2025-06-01", "expense"));

@@ -30,7 +30,6 @@ import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.database.AppDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +44,9 @@ public class HomeFragment extends Fragment {
     private View barMarchIn, barMarchOut, barAprilIn, barAprilOut, barMayIn, barMayOut;
     private TextView labelMarch, labelApril, labelMay;
     private TextView valueMarchIn, valueMarchOut, valueAprilIn, valueAprilOut, valueMayIn, valueMayOut;
+
+    // Loading overlay (jeśli używasz)
+    private View loadingOverlay;
 
     @Nullable
     @Override
@@ -95,12 +97,11 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_home_to_analysisFragment)
         );
 
-        btnShowMoreTransactions.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
-        btnShowMoreAnalysis.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+        btnShowMoreTransactions.setTextColor(ContextCompat.getColor(requireContext(), R.color.teal_700));
+        btnShowMoreAnalysis.setTextColor(ContextCompat.getColor(requireContext(), R.color.teal_700));
         btnShowMoreTransactions.setTypeface(null, Typeface.BOLD);
         btnShowMoreAnalysis.setTypeface(null, Typeface.BOLD);
 
-        // Najpierw generuj przypomnienia, potem wysyłaj PUSH jeśli to zimny start/logowanie
         generateBillRemindersAndShowPush();
 
         loadHomeData();
@@ -174,12 +175,14 @@ public class HomeFragment extends Fragment {
                 }
             }
 
-            // Teraz sprawdź i wyślij push TYLKO jeśli bill_reminder_notified == false (czyli po logowaniu/zimnym starcie)
+            // WYSYŁANIE POWIADOMIEŃ DLA WSZYSTKICH NIEOPŁACONYCH
             boolean notified = prefs.getBoolean("bill_reminder_notified", false);
             if (!notified) {
-                BillReminder reminder = db.billReminderDao().getFirstUnpaid(userId);
-                if (reminder != null) {
-                    sendPushNotification(reminder.title, reminder.message);
+                List<BillReminder> unpaidReminders = db.billReminderDao().getAllUnpaid(userId);
+                if (unpaidReminders != null && !unpaidReminders.isEmpty()) {
+                    for (BillReminder reminder : unpaidReminders) {
+                        sendPushNotification(reminder.title, reminder.message);
+                    }
                     prefs.edit().putBoolean("bill_reminder_notified", true).apply();
                 }
             }
@@ -198,12 +201,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadHomeData() {
+        if (loadingOverlay != null) loadingOverlay.setVisibility(View.VISIBLE);
+
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
         String uid = prefs.getString("user_id", null);
 
         if (uid == null) {
             tvBalance.setText("Brak danych użytkownika");
             tvMonthlySpending.setText("Brak danych");
+            if (loadingOverlay != null) loadingOverlay.setVisibility(View.GONE);
             return;
         }
 
@@ -352,6 +358,8 @@ public class HomeFragment extends Fragment {
                     params.bottomMargin = marginAboveBar;
                     valueMayIn.setLayoutParams(params);
                 }
+
+                if (loadingOverlay != null) loadingOverlay.setVisibility(View.GONE);
             });
         }).start();
     }

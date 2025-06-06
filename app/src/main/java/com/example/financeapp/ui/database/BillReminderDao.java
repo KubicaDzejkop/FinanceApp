@@ -35,4 +35,7 @@ public interface BillReminderDao {
 
     @Query("SELECT COUNT(*) FROM bill_reminders WHERE userId = :userId AND paid = 0")
     int countUnpaid(String userId);
+
+    @Query("SELECT * FROM bill_reminders WHERE userId = :userId AND paid = 0 ORDER BY dueDate ASC")
+    List<BillReminder> getAllUnpaid(String userId);
 }

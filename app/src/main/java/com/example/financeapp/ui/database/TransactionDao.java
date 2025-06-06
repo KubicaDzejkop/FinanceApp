@@ -68,6 +68,7 @@ public interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE id = :transactionId AND userId = :userId LIMIT 1")
     LiveData<Transaction> getTransactionById(int transactionId, String userId);
+
     @Query("SELECT * FROM transactions WHERE userId = :userId ORDER BY date DESC")
     List<Transaction> getTransactionsForUser(String userId);
 

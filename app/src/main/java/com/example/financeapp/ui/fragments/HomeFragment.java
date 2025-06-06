@@ -1,7 +1,12 @@
 package com.example.financeapp.ui.fragments;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,6 +17,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -21,6 +27,7 @@ import com.example.financeapp.R;
 import com.example.financeapp.ui.adapters.TransactionsAdapter;
 import com.example.financeapp.ui.models.Transaction;
 import com.example.financeapp.ui.models.TransactionListItem;
+import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.database.AppDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,8 +102,138 @@ public class HomeFragment extends Fragment {
         btnShowMoreTransactions.setTypeface(null, Typeface.BOLD);
         btnShowMoreAnalysis.setTypeface(null, Typeface.BOLD);
 
+        createNotificationChannel();
+
+        // Po wejściu na Home sprawdź czy istnieje nieopłacone przypomnienie i pokaż push tylko raz po uruchomieniu aplikacji
+        showUnpaidBillPushIfExists();
+
+        // === AUTOMATYCZNE PRZYPOMNIENIA O RACHUNKACH ===
+        generateBillReminders();
+
         loadHomeData();
         return view;
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "bills_channel";
+            String name = "Przypomnienia o rachunkach";
+            String desc = "Powiadomienia o zbliżających się rachunkach";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(desc);
+            NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendPushNotification(String title, String message) {
+        Intent intent = new Intent(requireContext(), requireActivity().getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "bills_channel")
+                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    // Po wejściu na ekran główny, pokaż PUSH jeśli jest nieopłacone przypomnienie
+    // ALE wysyłaj tylko raz na zimny start aplikacji, nie za każdym wejściem do HomeFragment
+    private void showUnpaidBillPushIfExists() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        String userId = prefs.getString("user_id", null);
+        boolean notified = prefs.getBoolean("bill_reminder_notified", false);
+        if (userId == null || notified) return;
+
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getDatabase(requireContext());
+            // Pobierz pierwsze nieopłacone przypomnienie
+            BillReminder reminder = db.billReminderDao().getFirstUnpaid(userId);
+            if (reminder != null) {
+                sendPushNotification(reminder.title, reminder.message);
+                prefs.edit().putBoolean("bill_reminder_notified", true).apply();
+            }
+        }).start();
+    }
+
+    private void generateBillReminders() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        String userId = prefs.getString("user_id", null);
+        if (userId == null) return;
+
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getDatabase(requireContext());
+            List<Transaction> transactions = db.transactionDao().getTransactionsForUser(userId);
+            List<BillReminder> reminders = db.billReminderDao().getAllSync(userId);
+
+            // Dla każdego odbiorcy rachunku znajdź NAJNOWSZY rachunek
+            Map<String, Transaction> latestBills = new HashMap<>();
+            for (Transaction t : transactions) {
+                if (t.getCategory() != null && t.getCategory().equalsIgnoreCase("rachunki")) {
+                    String recipient = t.getRecipient();
+                    if (!latestBills.containsKey(recipient) || t.getDate().compareTo(latestBills.get(recipient).getDate()) > 0) {
+                        latestBills.put(recipient, t);
+                    }
+                }
+            }
+
+            java.time.LocalDate today = java.time.LocalDate.now();
+
+            for (Transaction t : latestBills.values()) {
+                java.time.LocalDate transDate = java.time.LocalDate.parse(t.getDate());
+                int paymentDay = transDate.getDayOfMonth();
+
+                // Termin płatności na ten miesiąc lub następny (jeśli już minął)
+                java.time.LocalDate billDate = today.withDayOfMonth(Math.min(paymentDay, today.lengthOfMonth()));
+                if (!billDate.isAfter(today)) {
+                    java.time.LocalDate nextMonth = today.plusMonths(1);
+                    billDate = nextMonth.withDayOfMonth(Math.min(paymentDay, nextMonth.lengthOfMonth()));
+                }
+                java.time.LocalDate reminderDate = billDate.minusDays(2);
+
+                // SPRAWDZENIE: czy już zapłacono rachunek za ten miesiąc i odbiorcę
+                String billYearMonth = billDate.toString().substring(0, 7);
+                boolean alreadyPaid = false;
+                for (Transaction t2 : transactions) {
+                    if (t2.getCategory() != null
+                            && t2.getCategory().equalsIgnoreCase("rachunki")
+                            && t2.getRecipient().equalsIgnoreCase(t.getRecipient())
+                            && t2.getDate().startsWith(billYearMonth)) {
+                        alreadyPaid = true;
+                        break;
+                    }
+                }
+
+                // Tylko jeśli dziś >= reminderDate i NIE istnieje przypomnienie i NIE zapłacono
+                boolean alreadyExists = false;
+                for (BillReminder br : reminders) {
+                    if (br.title.equalsIgnoreCase(t.getRecipient())
+                            && br.dueDate.equals(billDate.toString())) {
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+                if (!today.isBefore(reminderDate) && !alreadyExists && !alreadyPaid) {
+                    BillReminder newReminder = new BillReminder();
+                    newReminder.userId = userId;
+                    newReminder.title = t.getRecipient();
+                    newReminder.message = "Opłać rachunek za " + t.getRecipient() + " do " + billDate.toString();
+                    newReminder.dueDate = billDate.toString();
+                    newReminder.paid = false;
+                    newReminder.notificationTime = java.time.ZonedDateTime.now().toInstant().toEpochMilli();
+                    newReminder.amount = t.getAmount();
+                    db.billReminderDao().insert(newReminder);
+                    // NIE wysyłaj tu ponownie powiadomienia!
+                }
+            }
+        }).start();
     }
 
     private String getShortMonthName(String date) {

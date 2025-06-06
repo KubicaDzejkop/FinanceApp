@@ -119,7 +119,8 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Circle K", -90.00, "Transport", "2025-03-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Netflix", -29.00, "Rozrywka", "2025-03-06", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Przelew od rodziny", 500.00, "Prezent", "2025-03-09", "income"));
-                                    db.transactionDao().insert(new Transaction(uid, "Energa", -180.50, "Rachunki", "2025-03-13", "expense"));
+                                    // Energa z nową datą!
+                                    db.transactionDao().insert(new Transaction(uid, "Energa", -180.50, "Rachunki", "2025-05-08", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "H&M", -120.00, "Zakupy", "2025-03-17", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Starbucks", -25.40, "Jedzenie", "2025-03-22", "expense"));
 
@@ -146,7 +147,6 @@ public class LoginFragment extends Fragment {
                                     db.transactionDao().insert(new Transaction(uid, "Rossmann", -70.00, "Drogeria", "2025-06-01", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "PKP TLK", -60.00, "Transport", "2025-06-02", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Wypłata", 3700.00, "Wynagrodzenie", "2025-06-02", "income"));
-                                    db.transactionDao().insert(new Transaction(uid, "Energa", -410.00, "Rachunki", "2025-06-03", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Empik", -105.00, "Książki", "2025-06-04", "expense"));
                                     db.transactionDao().insert(new Transaction(uid, "Kebab King", -52.40, "Jedzenie", "2025-06-05", "expense"));
 
@@ -155,9 +155,8 @@ public class LoginFragment extends Fragment {
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Rozrywka", 200.0));
                                     db.categoryLimitDao().insert(new CategoryLimit(uid, "Transport", 300.0));
 
-                                    // Przykładowe przypomnienie o rachunku
-                                    db.billReminderDao().insert(new BillReminder(uid, "Rachunek za prąd", "Opłać rachunek za prąd do końca miesiąca", "2025-06-25", false, System.currentTimeMillis() + 60_000));
-                                }).start();
+                                    // Przykładowe przypomnienie o rachunku (dla testów)
+                                    new BillReminder(uid, "Rachunek za prąd", "Opłać rachunek za prąd do końca miesiąca", "2025-06-25", false, System.currentTimeMillis() + 60_000, 0.0);                             }).start();
                             }
                             Toast.makeText(getContext(), "Zarejestrowano i zalogowano!", Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);

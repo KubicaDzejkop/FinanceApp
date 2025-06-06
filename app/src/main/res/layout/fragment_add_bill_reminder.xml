@@ -43,12 +43,23 @@
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"/>
+
         <EditText
             android:id="@+id/etMessage"
             android:hint="Treść przypomnienia"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <!-- NOWY EditText do kwoty -->
+        <EditText
+            android:id="@+id/etAmount"
+            android:hint="Kwota do zapłaty (np. 120.50)"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <EditText
             android:id="@+id/etDueDate"
             android:layout_width="match_parent"
@@ -57,6 +68,7 @@
             android:focusable="false"
             android:layout_marginTop="20dp"
             android:clickable="true" />
+
         <Button
             android:id="@+id/btnSaveReminder"
             android:layout_width="match_parent"

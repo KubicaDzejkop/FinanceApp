@@ -37,6 +37,7 @@ public class AddBillReminderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         EditText etTitle = view.findViewById(R.id.etTitle);
         EditText etMessage = view.findViewById(R.id.etMessage);
+        EditText etAmount = view.findViewById(R.id.etAmount); // NOWY EditText
         EditText etDueDate = view.findViewById(R.id.etDueDate);
         Button btnSave = view.findViewById(R.id.btnSaveReminder);
         ImageView btnBack = view.findViewById(R.id.btn_back_reminder);
@@ -72,10 +73,19 @@ public class AddBillReminderFragment extends Fragment {
         btnSave.setOnClickListener(v -> {
             String title = etTitle.getText().toString().trim();
             String message = etMessage.getText().toString().trim();
+            String amountStr = etAmount.getText().toString().trim();
             String dueDate = etDueDate.getText().toString().trim();
 
-            if (TextUtils.isEmpty(title) || TextUtils.isEmpty(message) || TextUtils.isEmpty(dueDate)) {
+            if (TextUtils.isEmpty(title) || TextUtils.isEmpty(message) || TextUtils.isEmpty(dueDate) || TextUtils.isEmpty(amountStr)) {
                 Toast.makeText(getContext(), "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double amount = 0.0;
+            try {
+                amount = Double.parseDouble(amountStr.replace(",", "."));
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Podaj poprawną kwotę!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -95,6 +105,7 @@ public class AddBillReminderFragment extends Fragment {
             reminder.dueDate = dueDate;
             reminder.paid = false;
             reminder.notificationTime = notifTime;
+            reminder.amount = amount;
 
             viewModel.insert(reminder);
 

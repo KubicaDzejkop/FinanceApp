@@ -18,14 +18,18 @@ public class BillReminder {
     @ColumnInfo(name = "notification_time")
     public long notificationTime;
 
+    // DODAJ KWOTĘ!
+    public double amount;
+
     public BillReminder() {}
 
-    public BillReminder(String userId, String title, String message, String dueDate, boolean paid, long notificationTime) {
+    public BillReminder(String userId, String title, String message, String dueDate, boolean paid, long notificationTime, double amount) {
         this.userId = userId;
         this.title = title;
         this.message = message;
         this.dueDate = dueDate;
         this.paid = paid;
         this.notificationTime = notificationTime;
+        this.amount = amount;
     }
 }

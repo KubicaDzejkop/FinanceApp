@@ -10,7 +10,7 @@ import com.example.financeapp.ui.models.Transaction;
 import com.example.financeapp.ui.models.User;
 import com.example.financeapp.ui.models.CategoryLimit; // <-- dodaj import
 
-@Database(entities = {User.class, Transaction.class, CategoryLimit.class, BillReminder.class}, version = 7) // <-- dodaj CategoryLimit, zwiększ wersję
+@Database(entities = {User.class, Transaction.class, CategoryLimit.class, BillReminder.class}, version = 10) // <-- dodaj CategoryLimit, zwiększ wersję
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
 

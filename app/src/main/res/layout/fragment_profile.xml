@@ -24,10 +24,9 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="16dp"
-                android:background="@android:color/darker_gray"
                 android:scaleType="centerCrop"
                 android:contentDescription="Avatar"
-                android:src="@android:drawable/sym_def_app_icon"
+                android:src="@drawable/awatar"
                 android:cropToPadding="true"
                 android:padding="4dp"/>
             <TextView

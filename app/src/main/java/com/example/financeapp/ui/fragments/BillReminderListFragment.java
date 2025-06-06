@@ -24,8 +24,10 @@ import com.example.financeapp.ui.ViewModels.BillReminderViewModelFactory;
 import com.example.financeapp.ui.database.AppDatabase;
 import com.example.financeapp.ui.database.BillReminderRepository;
 import com.example.financeapp.ui.models.Transaction;
+import com.example.financeapp.ui.models.BillReminder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class BillReminderListFragment extends Fragment {
     private BillReminderViewModel viewModel;
@@ -61,15 +63,29 @@ public class BillReminderListFragment extends Fragment {
         adapter.setOnPaidClickListener(reminder -> {
             new Thread(() -> {
                 AppDatabase db = AppDatabase.getDatabase(requireContext());
-                db.billReminderDao().delete(reminder);
 
+                double saldo = 0.0;
+                List<Transaction> transactions = db.transactionDao().getTransactionsForUser(reminder.userId);
+                for (Transaction t : transactions) {
+                    saldo += t.getAmount();
+                }
+
+                double kwotaDoZaplaty = Math.abs(reminder.amount);
+                if (saldo < kwotaDoZaplaty) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(requireContext(), "Brak środków, aby opłacić rachunek!", Toast.LENGTH_LONG).show()
+                    );
+                    return;
+                }
+
+                db.billReminderDao().delete(reminder);
 
                 String today = LocalDate.now().toString();
 
                 Transaction paidBill = new Transaction(
                         reminder.userId,
                         reminder.title,
-                        -Math.abs(reminder.amount),
+                        -kwotaDoZaplaty,
                         "Rachunki",
                         today,
                         "expense"

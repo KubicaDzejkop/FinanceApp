@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import com.example.financeapp.databinding.FragmentProfileBinding;
 import com.example.financeapp.ui.database.AppDatabase;
-import com.example.financeapp.ui.models.BillReminder;
 import com.example.financeapp.ui.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import androidx.navigation.Navigation;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
@@ -37,10 +37,9 @@ public class ProfileFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> binding.textProfileName.setText(name));
             }).start();
 
-            // BADGE: policz ile jest nieprzeczytanych wiadomości (tu: nieopłaconych przypomnień)
+            // BADGE: policz ile jest nieprzeczytanych wiadomości (nieopłaconych przypomnień)
             new Thread(() -> {
                 AppDatabase db = AppDatabase.getDatabase(requireContext());
-                // Pobierz liczbę nieopłaconych przypomnień (np. jako liczbę wiadomości)
                 int unreadCount = db.billReminderDao().countUnpaid(uid);
                 requireActivity().runOnUiThread(() -> {
                     TextView badge = binding.badgeMessages;
@@ -57,24 +56,33 @@ public class ProfileFragment extends Fragment {
             binding.badgeMessages.setVisibility(View.GONE);
         }
 
-        // Zakładki i przyciski
+        // Zakładka "Wiadomości"
         binding.tabMessages.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.action_profileFragment_to_billReminderListFragment);
         });
 
+        // Zakładka "Limity"
         binding.tabLimits.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.action_profileFragment_to_categoryLimitMenuFragment);
         });
 
+        // Przycisk "Dodaj przypomnienie"
         binding.buttonAddReminder.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(
                     com.example.financeapp.R.id.addBillReminderFragment);
         });
 
+        // Przycisk "Wyloguj się"
         binding.buttonLogout.setOnClickListener(v -> {
             logout();
+        });
+
+        // Zakładka/Opcja "Oceń aplikacje"
+        binding.tabRate.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(
+                    com.example.financeapp.R.id.action_profileFragment_to_rateAppFragment);
         });
 
         return binding.getRoot();
